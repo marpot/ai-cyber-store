@@ -1,0 +1,80 @@
+services:
+
+  wordpress:
+    image: wordpress:latest
+    container_name: cyber_store_wordpress
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_password
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./wordpress:/var/www/html
+    depends_on:
+      - mysql
+
+
+  mysql:
+    image: mysql:8.0
+    container_name: cyber_store_mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+
+  postgres:
+    image: postgres:16
+    container_name: cyber_store_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: cyber_ai
+      POSTGRES_USER: ai_admin
+      POSTGRES_PASSWORD: ai_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+  backend:
+    build:
+      context: ./backend
+    container_name: cyber_store_backend
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./backend/app:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: cyber_store_frontend
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    ports:
+      - "5173:5173"
+    command: npm run dev -- --host 0.0.0.0
+    depends_on:
+      - backend
+
+
+volumes:
+  mysql_data:
+  postgres_data:
+  frontend_node_modules:
