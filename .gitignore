@@ -41,3 +41,9 @@ wordpress/wp-content/themes/twentytwentythree/
 wordpress/wp-content/themes/twentytwentyfour/
 wordpress/wp-content/themes/twentytwentyfive/
 
+# WordPress generated files
+wordpress/wp-content/languages/
+wordpress/wp-content/upgrade/
+
+# WordPress uploads
+wordpress/wp-content/uploads/
