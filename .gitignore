@@ -30,5 +30,14 @@ wordpress/*
 !wordpress/wp-content/themes/
 !wordpress/wp-content/plugins/
 
-# Default WordPress plugins
+# Default plugins
 wordpress/wp-content/plugins/akismet/
+wordpress/wp-content/plugins/hello.php
+
+# Default WordPress themes
+wordpress/wp-content/themes/twentytwentyone/
+wordpress/wp-content/themes/twentytwentytwo/
+wordpress/wp-content/themes/twentytwentythree/
+wordpress/wp-content/themes/twentytwentyfour/
+wordpress/wp-content/themes/twentytwentyfive/
+
