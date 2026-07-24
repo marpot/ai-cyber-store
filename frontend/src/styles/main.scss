@@ -1,8 +1,20 @@
-@import "./variables";
-@import "./reset";
+@use "./variables" as *;
+@use "./reset";
 
 body {
+  min-height: 100vh;
+
   background: $bg-dark;
   color: $text-main;
-  font-family: Arial, sans-serif;
+
+  font-family:
+    Inter,
+    Arial,
+    sans-serif;
+
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100vh;
 }
