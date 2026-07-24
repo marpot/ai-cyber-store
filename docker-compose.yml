@@ -12,7 +12,8 @@ services:
       WORDPRESS_DB_PASSWORD: wp_password
       WORDPRESS_DB_NAME: wordpress
     volumes:
-      - ./wordpress:/var/www/html
+      - wordpress_data:/var/www/html
+      - ./wordpress/themes:/var/www/html/wp-content/themes
     depends_on:
       - mysql
 
@@ -44,14 +45,14 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
 
-  backend:
+  recommendation-service:
     build:
-      context: ./backend
-    container_name: cyber_store_backend
+      context: ./recommendation-service
+    container_name: cyber_store_recommendation
     restart: always
     working_dir: /app
     volumes:
-      - ./backend/app:/app
+      - ./recommendation-service/app:/app
     ports:
       - "8000:8000"
     depends_on:
@@ -71,10 +72,11 @@ services:
       - "5173:5173"
     command: npm run dev -- --host 0.0.0.0
     depends_on:
-      - backend
+      - recommendation-service
 
 
 volumes:
   mysql_data:
   postgres_data:
   frontend_node_modules:
+  wordpress_data:
