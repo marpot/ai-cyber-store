@@ -23,3 +23,9 @@ wordpress/wp-content/uploads/
 
 # OS
 .DS_Store
+
+# WordPress core
+wordpress/*
+!wordpress/wp-content/
+!wordpress/wp-content/themes/
+!wordpress/wp-content/plugins/
