@@ -1,8 +1,8 @@
 # AI Cyber Store
 
-AI Cyber Store is a full-stack e-commerce project combining WordPress, React, FastAPI and AI features.
+AI Cyber Store is a full-stack e-commerce platform combining WordPress, React, FastAPI and AI-powered features.
 
-The project is built as a developer portfolio application demonstrating modern web development, containerization and cloud-native technologies.
+The project is built as a developer portfolio application demonstrating modern web development, containerization and scalable application architecture.
 
 ## Tech Stack
 
@@ -11,13 +11,14 @@ The project is built as a developer portfolio application demonstrating modern w
 - TypeScript
 - Vite
 - SCSS
+- React Router
 - REST API integration
 
-### Backend
+### Backend / AI Services
 - Python
 - FastAPI
 - PostgreSQL
-- AI integrations
+- AI recommendation services
 
 ### CMS / E-commerce
 - WordPress
@@ -29,27 +30,53 @@ The project is built as a developer portfolio application demonstrating modern w
 - MySQL
 - PostgreSQL
 
-## Project Structure
+---
+
+# Project Structure
 
 ```
-
 ai-cyber-store/
 
-├── backend/          # FastAPI application
-├── database/         # Database related files
-├── frontend/         # React application
-├── wordpress/       # WordPress installation
-└── docker-compose.yml
+├── frontend/                 # React + TypeScript application
+├── recommendation-service/   # FastAPI AI recommendation service
+├── wordpress/                # WordPress files and themes
+├── docker-compose.yml
+├── Makefile
+└── README.md
+```
 
-````
+---
 
-## Running the Project
+# Running the Project
 
-Start containers:
+## Requirements
+
+- Docker
+- Docker Compose
+
+## Start application
+
+Build and start containers:
 
 ```bash
-docker compose up -d
-````
+docker compose up -d --build
+```
+
+Check running services:
+
+```bash
+docker compose ps
+```
+
+Stop application:
+
+```bash
+docker compose down
+```
+
+---
+
+# Local URLs
 
 Frontend:
 
@@ -57,7 +84,7 @@ Frontend:
 http://localhost:5173
 ```
 
-Backend API:
+FastAPI:
 
 ```
 http://localhost:8000
@@ -69,57 +96,102 @@ WordPress:
 http://localhost:8080
 ```
 
-## Development
+---
 
-Frontend:
+# Development Workflow
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+## Docker commands
 
-Backend:
+Start:
 
 ```bash
-cd backend
-uvicorn main:app --reload
+docker compose up -d
 ```
 
-## Planned Features
+Rebuild after Docker changes:
 
-* AI product assistant
-* Cybersecurity product catalog
-* AI recommendations
-* Security dashboard
-* User accounts
-* WooCommerce integration
-* Monitoring with Zabbix
-* Kubernetes deployment
-* CI/CD pipeline
-
-## Architecture
-
-```
-              React + TypeScript
-                    |
-                    |
-                 FastAPI
-                    |
-          -------------------
-          |                 |
-     PostgreSQL          AI Services
-
-
-WordPress + MySQL
-        |
-   E-commerce CMS
+```bash
+docker compose up -d --build
 ```
 
-## Author
+View logs:
+
+```bash
+docker compose logs -f
+```
+
+---
+
+## Optional Makefile commands
+
+Linux/macOS users can use:
+
+```bash
+make up
+```
+
+```bash
+make build
+```
+
+```bash
+make logs
+```
+
+---
+
+# Current Features
+
+- React frontend application
+- TypeScript configuration
+- React Router navigation
+- Application layout structure
+- SCSS styling system
+- Dockerized development environment
+- WordPress integration foundation
+- FastAPI service foundation
+
+---
+
+# Planned Features
+
+- AI product assistant
+- Cybersecurity product catalog
+- AI recommendations
+- Product search
+- User accounts
+- WooCommerce integration
+- Security dashboard
+- Monitoring with Zabbix
+- Kubernetes deployment
+- CI/CD pipeline
+
+---
+
+# Architecture
+
+```
+                 React + TypeScript
+                         |
+                         |
+                    FastAPI API
+                         |
+              ---------------------
+              |                   |
+         PostgreSQL          AI Services
+
+
+              WordPress + MySQL
+                    |
+              E-commerce CMS
+```
+
+---
+
+# Author
 
 Marcin Potoczny
 
 GitHub:
-[https://github.com/marpot/](https://github.com/marpot/)
 
+https://github.com/marpot/
