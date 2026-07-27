@@ -5,6 +5,12 @@
     "lib": ["ES2023", "DOM"],
     "module": "esnext",
     "types": ["vite/client"],
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,
 
