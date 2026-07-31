@@ -7,31 +7,61 @@
 
   scroll-snap-align: start;
 
+
   display: flex;
 
   flex-direction: column;
 
   justify-content: center;
 
+
   padding: 80px 40px;
+
 
   background: vars.$bg-dark;
 
 
-  h1 {
 
-    font-size: 48px;
+  &__header {
 
-    color: vars.$text-main;
+    margin-bottom: 40px;
+
+
+    h2 {
+
+      font-size: 42px;
+
+      color: vars.$text-main;
+
+      margin-bottom: 10px;
+
+    }
+
+
+    p {
+
+      color: vars.$text-muted;
+
+      font-size: 18px;
+
+    }
 
   }
 
 
-  p {
 
-    color: vars.$text-muted;
+  &__grid {
 
-    font-size: 18px;
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        auto-fit,
+        minmax(280px, 1fr)
+      );
+
+
+    gap: 30px;
 
   }
 
