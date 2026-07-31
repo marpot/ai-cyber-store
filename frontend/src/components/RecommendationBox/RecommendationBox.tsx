@@ -30,7 +30,10 @@ const products = [
 
 export default function RecommendationBox() {
   return (
-    <section className="recommendations">
+    <section
+      id="recommendations"
+      className="recommendations"
+    >
 
       <div className="recommendations__header">
 
