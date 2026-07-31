@@ -10,12 +10,14 @@ const products = [
     description: "AI powered vulnerability scanner",
     price: "$49",
   },
+
   {
     id: 2,
     name: "Cyber Monitor Pro",
     description: "Advanced threat monitoring system",
     price: "$99",
   },
+
   {
     id: 3,
     name: "Network Guardian",
@@ -40,11 +42,13 @@ export default function Shop() {
           Shop
         </h2>
 
+
         <p>
           Explore AI cybersecurity solutions
         </p>
 
       </div>
+
 
 
       <div className="shop__grid">
@@ -54,8 +58,17 @@ export default function Shop() {
             (product) => (
 
               <ProductCard
+
                 key={product.id}
-                product={product}
+
+                id = {product.id}
+
+                name={product.name}
+
+                description={product.description}
+
+                price={product.price}
+
               />
 
             )
