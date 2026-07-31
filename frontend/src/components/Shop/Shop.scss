@@ -1,0 +1,38 @@
+@use "@/styles/variables" as vars;
+
+
+.shop {
+
+  height: calc(100vh - 70px);
+
+  scroll-snap-align: start;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  padding: 80px 40px;
+
+  background: vars.$bg-dark;
+
+
+  h1 {
+
+    font-size: 48px;
+
+    color: vars.$text-main;
+
+  }
+
+
+  p {
+
+    color: vars.$text-muted;
+
+    font-size: 18px;
+
+  }
+
+}
