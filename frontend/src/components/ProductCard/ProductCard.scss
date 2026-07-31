@@ -1,0 +1,72 @@
+@use "@/styles/variables" as vars;
+
+.product-card {
+  background: vars.$bg-card;
+
+  border: 1px solid vars.$border-color;
+
+  border-radius: vars.$radius;
+
+  padding: 25px;
+
+  transition: 0.3s;
+
+
+  &:hover {
+    transform: translateY(-5px);
+
+    border-color: vars.$primary;
+  }
+
+
+  h3 {
+    color: vars.$primary;
+
+    font-size: 22px;
+
+    margin-bottom: 15px;
+  }
+
+
+  p {
+    color: vars.$text-muted;
+
+    line-height: 1.6;
+  }
+
+
+  &__footer {
+
+    margin-top: 25px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+
+    span {
+      color: vars.$text-main;
+
+      font-weight: 700;
+    }
+
+
+    button {
+
+      padding: 8px 18px;
+
+      border-radius: vars.$radius;
+
+      border: 1px solid vars.$secondary;
+
+      background: transparent;
+
+      color: vars.$secondary;
+
+      cursor: pointer;
+
+    }
+  }
+}
