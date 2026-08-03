@@ -9,6 +9,10 @@
 
   padding: 25px;
 
+  box-shadow: vars.$shadow-main;
+
+  backdrop-filter: blur(10px);
+
   transition: 0.3s;
 
 
