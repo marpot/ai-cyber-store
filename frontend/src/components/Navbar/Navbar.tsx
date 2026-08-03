@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom";
 import { useScroll } from "@/context/ScrollContext";
 
 import "./Navbar.scss";
