@@ -1,0 +1,64 @@
+@use "@/styles/variables" as vars;
+
+
+.recommendations {
+
+  height: calc(100vh - 70px);
+
+  scroll-snap-align: start;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+
+  padding: 80px 40px;
+
+  background: vars.$bg-card;
+
+
+
+  &__header {
+
+    margin-bottom: 40px;
+
+
+    h2 {
+
+      font-size: 42px;
+
+      color: vars.$text-main;
+
+      margin-bottom: 10px;
+
+    }
+
+
+    p {
+
+      color: vars.$text-muted;
+
+      font-size: 18px;
+
+    }
+
+  }
+
+
+
+  &__grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(280px, 1fr)
+    );
+
+    gap: 30px;
+
+  }
+
+}

@@ -1,9 +1,13 @@
 @use "./variables" as *;
 @use "./reset";
 
-body {
-  min-height: 100vh;
 
+html {
+  scroll-behavior: smooth;
+}
+
+
+body {
   background: $bg-dark;
   color: $text-main;
 
@@ -13,8 +17,25 @@ body {
     sans-serif;
 
   line-height: 1.5;
+
+  overflow: hidden;
 }
 
+
 #root {
-  min-height: 100vh;
+  height: 100vh;
+}
+
+
+.page-scroll {
+  height: calc(100vh - 70px);
+
+  overflow-y: auto;
+
+  scroll-snap-type: y mandatory;
+}
+
+
+.page-scroll > section {
+  scroll-snap-align: start;
 }

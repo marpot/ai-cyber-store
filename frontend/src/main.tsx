@@ -5,9 +5,23 @@ import { RouterProvider } from "react-router-dom";
 import router from "./router";
 import "./styles/main.scss";
 
+import {
+  ScrollProvider
+} from "./context/ScrollContext";
 
-createRoot(document.getElementById("root")!).render(
+
+createRoot(
+  document.getElementById("root")!
+).render(
+
   <StrictMode>
-    <RouterProvider router={router} />
+
+    <ScrollProvider>
+
+      <RouterProvider router={router} />
+
+    </ScrollProvider>
+
   </StrictMode>
+
 );
