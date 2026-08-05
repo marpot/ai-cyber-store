@@ -1,33 +1,80 @@
+import { useEffect, useState } from "react";
 import "./Shop.scss";
 
 import ProductCard from "@/components/ProductCard/ProductCard";
 
 
-const products = [
-  {
-    id: 1,
-    name: "AI Security Scanner",
-    description: "AI powered vulnerability scanner",
-    price: "$49",
-  },
-
-  {
-    id: 2,
-    name: "Cyber Monitor Pro",
-    description: "Advanced threat monitoring system",
-    price: "$99",
-  },
-
-  {
-    id: 3,
-    name: "Network Guardian",
-    description: "AI network protection tool",
-    price: "$149",
-  },
-];
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  prices: {
+    price: string;
+    currency_symbol: string;
+  };
+}
 
 
 export default function Shop() {
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+
+    fetch("http://localhost:8080/wp-json/wc/store/v1/products")
+
+      .then((response) => response.json())
+
+      .then((data) => {
+
+        console.log("WooCommerce products:", data);
+
+        setProducts(data);
+        setLoading(false);
+
+      })
+
+      .catch((error) => {
+
+        console.error(
+          "WooCommerce API error:",
+          error
+        );
+
+        setLoading(false);
+
+      });
+
+
+  }, []);
+
+
+
+  if (loading) {
+
+    return (
+
+      <section
+        id="shop"
+        className="shop"
+      >
+
+        <h2>
+          Loading products...
+        </h2>
+
+      </section>
+
+    );
+
+  }
+
+
+  console.log("Products state:", products);
+
+
 
   return (
 
@@ -61,13 +108,18 @@ export default function Shop() {
 
                 key={product.id}
 
-                id = {product.id}
+                id={product.id}
 
                 name={product.name}
 
-                description={product.description}
+                description={
+                  product.description
+                    .replace(/<[^>]*>/g, "")
+                }
 
-                price={product.price}
+                price={
+                  `${Number(product.prices.price) / 100} ${product.prices.currency_symbol}`
+                }
 
               />
 
