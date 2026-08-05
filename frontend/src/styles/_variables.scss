@@ -1,16 +1,42 @@
 $bg-dark: #080b10;
+
 $bg-card: #111820;
 
+
 $primary: #00ff88;
+
 $secondary: #00aaff;
 
+
 $text-main: #ffffff;
+
 $text-muted: #94a3b8;
+
 
 $border-color: #263241;
 
+
 $radius: 12px;
 
+
 // effects
+
 $shadow-main: 0 10px 40px rgba(0, 0, 0, 0.45);
+
 $glass-bg: rgba(17, 24, 32, 0.75);
+
+
+// backgrounds
+
+$bg-main:
+  radial-gradient(
+    circle at 80% 20%,
+    rgba(0, 170, 255, 0.15),
+    transparent 35%
+  ),
+  radial-gradient(
+    circle at 20% 80%,
+    rgba(0, 255, 136, 0.12),
+    transparent 35%
+  ),
+  $bg-dark;

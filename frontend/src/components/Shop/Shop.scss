@@ -3,10 +3,9 @@
 
 .shop {
 
-  min-height: calc(100vh - 70px);
+  height: calc(100vh - 70px);
 
   scroll-snap-align: start;
-
 
   display: flex;
 
@@ -14,11 +13,9 @@
 
   justify-content: center;
 
-
   padding: 80px 40px;
 
-
-  background: vars.$bg-dark;
+  background: vars.$bg-main;
 
 
 
@@ -26,16 +23,35 @@
 
     margin-bottom: 40px;
 
+    text-align: center;
+
 
     h2 {
 
-      font-size: 42px;
+      font-size: 48px;
+
+      font-weight: 800;
+
+      letter-spacing: 2px;
+
+      text-transform: uppercase;
+
+      margin-bottom: 15px;
 
       color: vars.$text-main;
 
-      margin-bottom: 10px;
+      background: linear-gradient(
+        90deg,
+        vars.$primary,
+        vars.$secondary
+      );
+
+      -webkit-background-clip: text;
+
+      -webkit-text-fill-color: transparent;
 
     }
+
 
 
     p {
@@ -43,6 +59,12 @@
       color: vars.$text-muted;
 
       font-size: 18px;
+
+      letter-spacing: 1px;
+
+      max-width: 600px;
+
+      margin: 0 auto;
 
     }
 
@@ -54,14 +76,14 @@
 
     display: grid;
 
-    grid-template-columns:
-      repeat(
-        auto-fit,
-        minmax(280px, 1fr)
-      );
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(220px, 260px)
+    );
 
+    gap: 25px;
 
-    gap: 30px;
+    justify-content: center;
 
   }
 

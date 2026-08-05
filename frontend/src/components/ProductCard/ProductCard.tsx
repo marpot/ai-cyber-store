@@ -8,6 +8,8 @@ interface ProductCardProps {
   name: string;
   description: string;
   price: string;
+  image?: string;
+  isOnSale?: boolean;
 }
 
 
@@ -16,15 +18,52 @@ export default function ProductCard({
   name,
   description,
   price,
+  image,
+  isOnSale,
 }: ProductCardProps) {
+
+
+  console.log("PRODUCT CARD IMAGE:", image);
+
 
   return (
 
     <article className="product-card">
 
+
+      {
+        image && (
+
+          <div className="product-card__image">
+
+            <img
+              src={image}
+              alt={name}
+            />
+
+          </div>
+
+        )
+      }
+
+
+
+      {
+        isOnSale && (
+
+          <span className="product-card__badge">
+            SALE
+          </span>
+
+        )
+      }
+
+
+
       <h3>
         {name}
       </h3>
+
 
 
       <p>

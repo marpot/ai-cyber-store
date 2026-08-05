@@ -12,10 +12,19 @@ interface Product {
     price: string;
     currency_symbol: string;
   };
+
+  images: {
+    src: string;
+    alt: string;
+  }[];
+
+  is_on_sale: boolean;
 }
 
 
 export default function Shop() {
+
+  const API_URL = import.meta.env.VITE_WP_API_URL;
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +32,7 @@ export default function Shop() {
 
   useEffect(() => {
 
-    fetch("http://localhost:8080/wp-json/wc/store/v1/products")
+    fetch(`${API_URL}/wp-json/wc/store/v1/products`)
 
       .then((response) => response.json())
 
@@ -48,7 +57,7 @@ export default function Shop() {
       });
 
 
-  }, []);
+  }, [API_URL]);
 
 
 
@@ -119,6 +128,14 @@ export default function Shop() {
 
                 price={
                   `${Number(product.prices.price) / 100} ${product.prices.currency_symbol}`
+                }
+
+                image = {
+                  product.images?.[0]?.src
+                }
+
+                isOnSale={
+                  product.is_on_sale
                 }
 
               />

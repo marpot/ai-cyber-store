@@ -59,6 +59,10 @@ export default function Home() {
                   entry.target.id;
 
 
+                entry.target.classList.add(
+                  "active"
+                );
+
 
                 setActiveSection(id);
 
