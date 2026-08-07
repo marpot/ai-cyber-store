@@ -1,4 +1,8 @@
 import { useScroll } from "@/context/ScrollContext";
+import { useTranslation } from "react-i18next";
+
+import LanguageSwitcher from "@/components/LanguageSwitcher/LanguageSwitcher";
+
 
 import "./Navbar.scss";
 
@@ -11,18 +15,21 @@ function Navbar() {
   } = useScroll();
 
 
+  const {
+    t
+  } = useTranslation();
+
+
 
   const scrollTo = (
-    id:string
+    id: string
   ) => {
-
 
     document
       .getElementById(id)
       ?.scrollIntoView({
-        behavior:"smooth"
+        behavior: "smooth"
       });
-
 
   };
 
@@ -34,8 +41,11 @@ function Navbar() {
 
 
       <div className="navbar__logo">
+
         AI Cyber Store
+
       </div>
+
 
 
 
@@ -53,7 +63,7 @@ function Navbar() {
             scrollTo("home")
           }
         >
-          Home
+          {t("nav.home")}
         </a>
 
 
@@ -71,8 +81,9 @@ function Navbar() {
             )
           }
         >
-          AI
+          {t("nav.recommendations")}
         </a>
+
 
 
 
@@ -87,16 +98,23 @@ function Navbar() {
             scrollTo("shop")
           }
         >
-          Shop
+          {t("nav.shop")}
         </a>
+
 
 
       </div>
 
 
+
+
+      <LanguageSwitcher />
+
+
     </nav>
 
   );
+
 }
 
 

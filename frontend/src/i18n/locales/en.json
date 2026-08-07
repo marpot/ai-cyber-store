@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "home": "Home",
+    "recommendations": "Recommendations",
+    "shop": "Shop"
+  },
+
+  "hero": {
+    "title": "AI Cyber Store",
+    "subtitle": "Intelligent cybersecurity solutions",
+    "description": "Protect your digital world with AI-powered security tools",
+    "button": "Explore products"
+  },
+
+  "recommendations": {
+    "title": "AI Recommendations",
+    "description": "Find the best security solutions for your needs"
+  },
+
+  "shop": {
+    "title": "Shop",
+    "description": "Explore AI cybersecurity solutions",
+    "view": "View product"
+  }
+}
