@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import "./ProductCard.scss";
@@ -23,7 +24,14 @@ export default function ProductCard({
 }: ProductCardProps) {
 
 
+  const {
+    t
+  } = useTranslation();
+
+
+
   console.log("PRODUCT CARD IMAGE:", image);
+
 
 
   return (
@@ -74,16 +82,18 @@ export default function ProductCard({
 
       <div className="product-card__footer">
 
+
         <span>
           {price}
         </span>
+
 
 
         <Link
           to={`/product/${id}`}
           className="product-card__button"
         >
-          View
+          {t("shop.view")}
         </Link>
 
 

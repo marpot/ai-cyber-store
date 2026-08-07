@@ -96,7 +96,7 @@ export default function Shop() {
       >
 
         <h2>
-          Loading products...
+          {t("shop.loading")}
         </h2>
 
       </section>

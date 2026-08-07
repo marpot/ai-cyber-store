@@ -20,6 +20,9 @@
   "shop": {
     "title": "Sklep",
     "description": "Odkryj rozwiązania AI dla cyberbezpieczeństwa",
-    "view": "Zobacz produkt"
+    "view": "Zobacz produkt",
+    "loading": "Ładowanie produktów..."
   }
+
+  
 }

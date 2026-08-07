@@ -1,31 +1,51 @@
+import { useTranslation } from "react-i18next";
+
 import "./Hero.scss";
 
+
 export default function Hero() {
+
+
+  const {
+    t
+  } = useTranslation();
+
+
+
   return (
+
     <section
       id="home"
       className="hero"
     >
+
       <div className="hero__content">
 
+
         <h1>
-          AI Cyber Store
+          {t("hero.title")}
         </h1>
 
+
         <h2>
-          Intelligent Cybersecurity Solutions
+          {t("hero.subtitle")}
         </h2>
 
+
         <p>
-          Discover AI-powered tools, security solutions
-          and technologies designed to protect your digital world.
+          {t("hero.description")}
         </p>
 
+
         <button>
-          Explore products
+          {t("hero.button")}
         </button>
 
+
       </div>
+
     </section>
+
   );
+
 }
