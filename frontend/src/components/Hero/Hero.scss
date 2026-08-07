@@ -1,5 +1,6 @@
 @use "@/styles/variables" as vars;
 
+
 .hero {
 
   height: calc(100vh - 70px);
@@ -25,6 +26,7 @@
     max-width: 750px;
 
 
+
     h1 {
 
       font-size: 72px;
@@ -38,6 +40,7 @@
     }
 
 
+
     h2 {
 
       font-size: 32px;
@@ -47,6 +50,7 @@
       margin-bottom: 25px;
 
     }
+
 
 
     p {
@@ -64,28 +68,74 @@
     }
 
 
+
     button {
 
       padding: 14px 35px;
 
-      border-radius: vars.$radius;
 
-      border: 1px solid vars.$primary;
+      border-radius: 14px;
 
-      background: vars.$primary;
 
-      color: vars.$bg-dark;
+      border: 1px solid #00ff88;
 
-      font-weight: 700;
+
+      background: linear-gradient(
+        135deg,
+        #00ff88,
+        #00b86b
+      );
+
+
+      color: #06110b;
+
+
+      font-size: 16px;
+
+      font-weight: 800;
+
+
+      letter-spacing: 0.5px;
+
 
       cursor: pointer;
 
-      transition: 0.3s;
+
+      box-shadow:
+        0 0 20px rgba(0,255,136,0.35),
+        0 0 40px rgba(0,255,136,0.15);
+
+
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+
 
 
       &:hover {
 
-        transform: translateY(-3px);
+        transform: translateY(-4px);
+
+
+        background: linear-gradient(
+          135deg,
+          #39ff14,
+          #00ff88
+        );
+
+
+        box-shadow:
+          0 0 30px rgba(57,255,20,0.6),
+          0 0 60px rgba(0,255,136,0.35);
+
+      }
+
+
+
+      &:active {
+
+        transform: translateY(-1px);
 
       }
 
@@ -97,6 +147,8 @@
 
 
 
+
+
 @media (max-width: 768px) {
 
   .hero {
@@ -104,7 +156,9 @@
     padding: 0 20px;
 
 
+
     &__content {
+
 
       h1 {
 
@@ -113,11 +167,13 @@
       }
 
 
+
       h2 {
 
         font-size: 24px;
 
       }
+
 
 
       p {

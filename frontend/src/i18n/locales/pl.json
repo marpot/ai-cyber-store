@@ -22,6 +22,11 @@
     "description": "Odkryj rozwiązania AI dla cyberbezpieczeństwa",
     "view": "Zobacz produkt",
     "loading": "Ładowanie produktów..."
+  },
+
+  "product": {
+    "title": "Produkt",
+    "back": "Powrót do sklepu"
   }
 
   
