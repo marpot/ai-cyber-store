@@ -26,8 +26,7 @@
 
   "product": {
     "title": "Produkt",
-    "back": "Powrót do sklepu"
+    "back": "Powrót do sklepu",
+    "addToCart": "Dodaj do koszyka"
   }
-
-  
 }

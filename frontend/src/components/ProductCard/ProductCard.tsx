@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 import "./ProductCard.scss";
 
-
 interface ProductCardProps {
   id: number;
   name: string;
@@ -13,7 +12,6 @@ interface ProductCardProps {
   isOnSale?: boolean;
 }
 
-
 export default function ProductCard({
   id,
   name,
@@ -22,72 +20,41 @@ export default function ProductCard({
   image,
   isOnSale,
 }: ProductCardProps) {
-
-
-  const {
-    t
-  } = useTranslation();
-
-
+  const { t } = useTranslation();
 
   console.log("PRODUCT CARD IMAGE:", image);
 
-
-
   return (
-
     <article className="product-card">
 
+      {image && (
+        <div className="product-card__image">
+          <img
+            src={image}
+            alt={name}
+          />
+        </div>
+      )}
 
-      {
-        image && (
-
-          <div className="product-card__image">
-
-            <img
-              src={image}
-              alt={name}
-            />
-
-          </div>
-
-        )
-      }
-
-
-
-      {
-        isOnSale && (
-
-          <span className="product-card__badge">
-            SALE
-          </span>
-
-        )
-      }
-
-
+      {isOnSale && (
+        <span className="product-card__badge">
+          SALE
+        </span>
+      )}
 
       <h3>
         {name}
       </h3>
 
-
-
       <p>
         {description}
       </p>
 
-
-
       <div className="product-card__footer">
-
 
         <span>
           {price}
         </span>
-
-
 
         <Link
           to={`/product/${id}`}
@@ -96,12 +63,8 @@ export default function ProductCard({
           {t("shop.view")}
         </Link>
 
-
       </div>
 
-
     </article>
-
   );
-
 }
