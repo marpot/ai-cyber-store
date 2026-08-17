@@ -2,7 +2,8 @@
   "nav": {
     "home": "Home",
     "recommendations": "Recommendations",
-    "shop": "Shop"
+    "shop": "Shop",
+    "cart": "Cart"
   },
 
   "hero": {
@@ -28,5 +29,15 @@
     "title": "Product",
     "back": "Back to shop",
     "addToCart": "Add to cart"
+  },
+
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "continueShopping": "Continue shopping",
+    "total": "Total",
+    "remove": "Remove",
+    "checkout": "Proceed to checkout",
+    "adding": "Adding..."
   }
 }

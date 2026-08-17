@@ -3,6 +3,7 @@ import { useScroll } from "@/context/ScrollContext";
 import { useTranslation } from "react-i18next";
 
 import LanguageSwitcher from "@/components/LanguageSwitcher/LanguageSwitcher";
+import { useCart } from "@/context/CartContext";
 
 import "./Navbar.scss";
 
@@ -12,19 +13,31 @@ function Navbar() {
     scrollTo: contextScrollTo,
   } = useScroll();
 
-  const {
-    t,
-  } = useTranslation();
+  const { t } = useTranslation();
 
   const location = useLocation();
   const navigate = useNavigate();
 
+  const { cart } = useCart();
+
   const isProductPage =
     location.pathname.startsWith("/product/");
 
+  const isCartPage =
+    location.pathname === "/cart";
+
+  const isSubPage =
+    isProductPage || isCartPage;
+
+  const cartCount =
+    cart?.items.reduce(
+      (total, item) => total + item.quantity,
+      0
+    ) ?? 0;
+
   const handleNavigation = (section: string) => {
-    // Jesteśmy na stronie produktu
-    if (isProductPage) {
+    // Jesteśmy na stronie produktu lub koszyka
+    if (isSubPage) {
       navigate("/");
 
       // Czekamy aż Home zostanie wyrenderowany
@@ -51,6 +64,7 @@ function Navbar() {
         <a
           className={
             !isProductPage &&
+            !isCartPage &&
             activeSection === "home"
               ? "active"
               : ""
@@ -65,14 +79,13 @@ function Navbar() {
         <a
           className={
             !isProductPage &&
+            !isCartPage &&
             activeSection === "recommendations"
               ? "active"
               : ""
           }
           onClick={() =>
-            handleNavigation(
-              "recommendations"
-            )
+            handleNavigation("recommendations")
           }
         >
           {t("nav.recommendations")}
@@ -81,7 +94,8 @@ function Navbar() {
         <a
           className={
             isProductPage ||
-            activeSection === "shop"
+            (!isCartPage &&
+              activeSection === "shop")
               ? "active"
               : ""
           }
@@ -90,6 +104,19 @@ function Navbar() {
           }
         >
           {t("nav.shop")}
+        </a>
+
+        <a
+          className={
+            isCartPage
+              ? "active"
+              : ""
+          }
+          onClick={() =>
+            navigate("/cart")
+          }
+        >
+          {t("nav.cart")} ({cartCount})
         </a>
 
       </div>

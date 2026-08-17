@@ -1,8 +1,24 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import {
+  useEffect,
+  useState,
+} from "react";
 
-import { useScroll } from "@/context/ScrollContext";
+import {
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+
+import {
+  useTranslation,
+} from "react-i18next";
+
+import {
+  useScroll,
+} from "@/context/ScrollContext";
+
+import {
+  useCart,
+} from "@/context/CartContext";
 
 import "./Product.scss";
 
@@ -33,24 +49,45 @@ interface ProductData {
 }
 
 export default function Product() {
-  const { id } = useParams<{ id: string }>();
+  const { id } =
+    useParams<{
+      id: string;
+    }>();
 
-  const { t } = useTranslation();
+  const { t } =
+    useTranslation();
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
-  const { scrollTo } = useScroll();
+  const { scrollTo } =
+    useScroll();
 
-  const API_URL = import.meta.env.VITE_WP_API_URL;
+  const {
+    addToCart,
+    loading: cartLoading,
+  } = useCart();
+
+  const API_URL =
+    import.meta.env
+      .VITE_WP_API_URL;
 
   const [product, setProduct] =
-    useState<ProductData | null>(null);
+    useState<ProductData | null>(
+      null
+    );
 
   const [loading, setLoading] =
     useState(true);
 
   const [error, setError] =
-    useState<string | null>(null);
+    useState<string | null>(
+      null
+    );
+
+  /*
+   * Powrót do sklepu.
+   */
 
   const handleBack = () => {
     navigate("/");
@@ -60,9 +97,17 @@ export default function Product() {
     }, 100);
   };
 
+  /*
+   * Pobranie produktu
+   * z WooCommerce Store API.
+   */
+
   useEffect(() => {
     if (!id) {
-      setError(t("product.missingId"));
+      setError(
+        t("product.missingId")
+      );
+
       setLoading(false);
 
       return;
@@ -71,12 +116,27 @@ export default function Product() {
     const url =
       `${API_URL}/wp-json/wc/store/v1/products/${id}`;
 
-    console.log("========== PRODUCT DEBUG ==========");
-    console.log("Product ID:", id);
-    console.log("API URL:", API_URL);
-    console.log("Request URL:", url);
+    console.log(
+      "========== PRODUCT DEBUG =========="
+    );
+
+    console.log(
+      "Product ID:",
+      id
+    );
+
+    console.log(
+      "API URL:",
+      API_URL
+    );
+
+    console.log(
+      "Request URL:",
+      url
+    );
 
     setLoading(true);
+
     setError(null);
 
     fetch(url)
@@ -89,14 +149,6 @@ export default function Product() {
         console.log(
           "HTTP OK:",
           response.ok
-        );
-
-        const contentType =
-          response.headers.get("content-type");
-
-        console.log(
-          "Content-Type:",
-          contentType
         );
 
         if (!response.ok) {
@@ -124,102 +176,152 @@ export default function Product() {
         return data;
       })
 
-      .then((data: ProductData) => {
-        setProduct(data);
-        setLoading(false);
-      })
+      .then(
+        (data: ProductData) => {
+          setProduct(data);
 
-      .catch((err: Error) => {
-        console.error(
-          "WooCommerce product error:",
-          err
-        );
+          setLoading(false);
+        }
+      )
 
-        setError(err.message);
-        setLoading(false);
-      });
-  }, [API_URL, id, t]);
+      .catch(
+        (err: Error) => {
+          console.error(
+            "WooCommerce product error:",
+            err
+          );
+
+          setError(
+            err.message
+          );
+
+          setLoading(false);
+        }
+      );
+  }, [
+    API_URL,
+    id,
+    t,
+  ]);
+
+  /*
+   * Stan ładowania.
+   */
 
   if (loading) {
     return (
       <section className="product-page">
-
         <button
           className="product-page__back"
           onClick={handleBack}
         >
-          ← {t("product.back")}
+          ←{" "}
+          {t(
+            "product.back"
+          )}
         </button>
 
         <div className="product-page__content">
           <h1>
-            {t("shop.loading")}
+            {t(
+              "shop.loading"
+            )}
           </h1>
         </div>
-
       </section>
     );
   }
 
-  if (error || !product) {
+  /*
+   * Błąd / brak produktu.
+   */
+
+  if (
+    error ||
+    !product
+  ) {
     return (
       <section className="product-page">
-
         <button
           className="product-page__back"
           onClick={handleBack}
         >
-          ← {t("product.back")}
+          ←{" "}
+          {t(
+            "product.back"
+          )}
         </button>
 
         <div className="product-page__content">
-
           <h1>
-            {t("product.notFound")}
+            {t(
+              "product.notFound"
+            )}
           </h1>
 
           <p>
             {error ||
-              t("product.fetchError")}
+              t(
+                "product.fetchError"
+              )}
           </p>
 
           <p>
-            {t("product.productId")}: {id}
+            {t(
+              "product.productId"
+            )}
+            : {id}
           </p>
 
           <p>
-            {t("product.api")}: {API_URL}
+            {t(
+              "product.api"
+            )}
+            : {API_URL}
           </p>
-
         </div>
-
       </section>
     );
   }
 
+  /*
+   * Ceny WooCommerce są zwracane
+   * w najmniejszej jednostce waluty.
+   *
+   * 3900 = 39.00 PLN
+   */
+
   const price =
-    Number(product.prices.price) / 100;
+    Number(
+      product.prices.price
+    ) / 100;
 
   const regularPrice =
     Number(
-      product.prices.regular_price
+      product.prices
+        .regular_price
     ) / 100;
+
+  /*
+   * Widok produktu.
+   */
 
   return (
     <section className="product-page">
-
       <button
         className="product-page__back"
         onClick={handleBack}
       >
-        ← {t("product.back")}
+        ←{" "}
+        {t(
+          "product.back"
+        )}
       </button>
 
       <div className="product-page__content">
 
         {product.images?.[0]?.src && (
           <div className="product-page__image">
-
             <img
               src={
                 product.images[0].src
@@ -229,7 +331,6 @@ export default function Product() {
                 product.name
               }
             />
-
           </div>
         )}
 
@@ -249,7 +350,9 @@ export default function Product() {
 
           {product.is_on_sale && (
             <span className="product-page__regular-price">
-              {regularPrice.toFixed(2)}{" "}
+              {regularPrice.toFixed(
+                2
+              )}{" "}
               {
                 product.prices
                   .currency_symbol
@@ -258,7 +361,9 @@ export default function Product() {
           )}
 
           <span>
-            {price.toFixed(2)}{" "}
+            {price.toFixed(
+              2
+            )}{" "}
             {
               product.prices
                 .currency_symbol
@@ -272,13 +377,42 @@ export default function Product() {
             <button
               className="product-page__cart"
               type="button"
+              disabled={
+                cartLoading
+              }
+              onClick={async () => {
+                try {
+                  console.log(
+                    "Adding WooCommerce product:",
+                    product.id
+                  );
+
+                  await addToCart(
+                    product.id
+                  );
+
+                  navigate(
+                    "/cart"
+                  );
+                } catch (error) {
+                  console.error(
+                    "Could not add product to cart:",
+                    error
+                  );
+                }
+              }}
             >
-              {t("product.addToCart")}
+              {cartLoading
+                ? t(
+                    "cart.adding"
+                  )
+                : t(
+                    "product.addToCart"
+                  )}
             </button>
           )}
 
       </div>
-
     </section>
   );
 }

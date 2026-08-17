@@ -2,7 +2,8 @@
   "nav": {
     "home": "Start",
     "recommendations": "Rekomendacje",
-    "shop": "Sklep"
+    "shop": "Sklep",
+    "cart": "Koszyk"
   },
 
   "hero": {
@@ -28,5 +29,15 @@
     "title": "Produkt",
     "back": "Powrót do sklepu",
     "addToCart": "Dodaj do koszyka"
+  },
+
+  "cart": {
+    "title": "Koszyk",
+    "empty": "Twój koszyk jest pusty",
+    "continueShopping": "Wróć do sklepu",
+    "back": "Wróć do sklepu",
+    "total": "Razem",
+    "remove": "Usuń",
+    "checkout": "Przejdź do płatności"
   }
 }

@@ -1,7 +1,9 @@
 services:
 
   wordpress:
-    image: wordpress:latest
+    build:
+      context: ./wordpress
+      dockerfile: Dockerfile
     container_name: cyber_store_wordpress
     restart: always
     ports:
@@ -14,11 +16,11 @@ services:
     volumes:
       - wordpress_data:/var/www/html
       - ./wordpress/themes:/var/www/html/wp-content/themes
+      - ./wordpress/wp-content/mu-plugins:/var/www/html/wp-content/mu-plugins
       - ./wordpress/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
       - ./wordpress/.htaccess:/var/www/html/.htaccess
     depends_on:
       - mysql
-
 
   mysql:
     image: mysql:8.0
@@ -31,7 +33,6 @@ services:
       MYSQL_ROOT_PASSWORD: root_password
     volumes:
       - mysql_data:/var/lib/mysql
-
 
   postgres:
     image: postgres:16
@@ -46,7 +47,6 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-
   recommendation-service:
     build:
       context: ./recommendation-service
@@ -59,7 +59,6 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
-
 
   frontend:
     build:
@@ -74,7 +73,6 @@ services:
       - "5173:5173"
     depends_on:
       - recommendation-service
-
 
 volumes:
   mysql_data:
