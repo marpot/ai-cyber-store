@@ -1,85 +1,205 @@
+import { useEffect, useState } from "react";
 import "./Shop.scss";
 
 import ProductCard from "@/components/ProductCard/ProductCard";
 
+import { useTranslation } from "react-i18next";
 
-const products = [
-  {
-    id: 1,
-    name: "AI Security Scanner",
-    description: "AI powered vulnerability scanner",
-    price: "$49",
-  },
 
-  {
-    id: 2,
-    name: "Cyber Monitor Pro",
-    description: "Advanced threat monitoring system",
-    price: "$99",
-  },
+interface Product {
+  id: number;
 
-  {
-    id: 3,
-    name: "Network Guardian",
-    description: "AI network protection tool",
-    price: "$149",
-  },
-];
+  name: string;
+
+  description: string;
+
+  prices: {
+    price: string;
+    currency_symbol: string;
+  };
+
+  images: {
+    src: string;
+    alt: string;
+  }[];
+
+  is_on_sale: boolean;
+}
 
 
 export default function Shop() {
 
+
+  const { t } = useTranslation();
+
+
+  const API_URL = import.meta.env.VITE_WP_API_URL;
+
+
+  const [products, setProducts] = useState<Product[]>([]);
+
+  const [loading, setLoading] = useState(true);
+
+
+
+  useEffect(() => {
+
+
+    fetch(`${API_URL}/wp-json/wc/store/v1/products`)
+
+
+      .then((response) => response.json())
+
+
+      .then((data) => {
+
+
+        console.log("WooCommerce products:", data);
+
+
+        setProducts(data);
+
+        setLoading(false);
+
+
+      })
+
+
+      .catch((error) => {
+
+
+        console.error(
+          "WooCommerce API error:",
+          error
+        );
+
+
+        setLoading(false);
+
+
+      });
+
+
+  }, [API_URL]);
+
+
+
+
+  if (loading) {
+
+
+    return (
+
+      <section
+        id="shop"
+        className="shop"
+      >
+
+        <h2>
+          {t("shop.loading")}
+        </h2>
+
+      </section>
+
+    );
+
+  }
+
+
+
+
+  console.log("Products state:", products);
+
+
+
+
   return (
+
 
     <section
       id="shop"
       className="shop"
     >
 
+
       <div className="shop__header">
 
+
         <h2>
-          Shop
+          {t("shop.title")}
         </h2>
 
 
+
         <p>
-          Explore AI cybersecurity solutions
+          {t("shop.description")}
         </p>
+
 
       </div>
 
 
 
+
       <div className="shop__grid">
+
 
         {
           products.map(
+
             (product) => (
+
 
               <ProductCard
 
+
                 key={product.id}
 
-                id = {product.id}
+
+                id={product.id}
+
 
                 name={product.name}
 
-                description={product.description}
 
-                price={product.price}
+                description={
+                  product.description
+                    .replace(/<[^>]*>/g, "")
+                }
+
+
+                price={
+                  `${Number(product.prices.price) / 100} ${product.prices.currency_symbol}`
+                }
+
+
+                image={
+                  product.images?.[0]?.src
+                }
+
+
+                isOnSale={
+                  product.is_on_sale
+                }
+
 
               />
 
+
             )
+
           )
+
         }
+
 
       </div>
 
 
     </section>
 
+
   );
+
 
 }

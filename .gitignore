@@ -16,7 +16,7 @@ backend/__pycache__/
 mysql_data/
 postgres_data/
 
-# WordPress
+# WordPress uploads
 wordpress/wp-content/uploads/
 
 # IDE
@@ -26,15 +26,25 @@ wordpress/wp-content/uploads/
 # OS
 .DS_Store
 
+
 # WordPress core
 wordpress/*
+
+# Keep custom WordPress configuration
+!wordpress/.htaccess
+!wordpress/apache/
+!wordpress/apache/000-default.conf
+
+# Keep wp-content
 !wordpress/wp-content/
 !wordpress/wp-content/themes/
 !wordpress/wp-content/plugins/
 
+
 # Default plugins
 wordpress/wp-content/plugins/akismet/
 wordpress/wp-content/plugins/hello.php
+
 
 # Default WordPress themes
 wordpress/wp-content/themes/twentytwentyone/
@@ -43,9 +53,7 @@ wordpress/wp-content/themes/twentytwentythree/
 wordpress/wp-content/themes/twentytwentyfour/
 wordpress/wp-content/themes/twentytwentyfive/
 
+
 # WordPress generated files
 wordpress/wp-content/languages/
 wordpress/wp-content/upgrade/
-
-# WordPress uploads
-wordpress/wp-content/uploads/

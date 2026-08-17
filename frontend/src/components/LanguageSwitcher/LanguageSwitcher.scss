@@ -1,0 +1,54 @@
+@use "@/styles/variables" as vars;
+
+
+.language-switcher {
+
+  display: flex;
+
+  gap: 8px;
+
+
+
+  button {
+
+    padding: 6px 12px;
+
+    border-radius: vars.$radius;
+
+    border: 1px solid vars.$border-color;
+
+    background: transparent;
+
+    color: vars.$text-muted;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+
+
+    &:hover {
+
+      border-color: vars.$primary;
+
+      color: vars.$primary;
+
+    }
+
+
+
+    &.active {
+
+      background: vars.$primary;
+
+      color: vars.$bg-dark;
+
+      border-color: vars.$primary;
+
+      font-weight: 700;
+
+    }
+
+  }
+
+}

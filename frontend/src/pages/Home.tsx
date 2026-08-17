@@ -10,18 +10,14 @@ import {
   useScroll
 } from "@/context/ScrollContext";
 
-
 export default function Home() {
-
 
   const {
     setActiveSection
   } = useScroll();
 
 
-
   useEffect(() => {
-
 
     const scrollContainer =
       document.querySelector(
@@ -35,11 +31,9 @@ export default function Home() {
       );
 
 
-
     if (!scrollContainer) {
       return;
     }
-
 
 
     const observer =
@@ -47,21 +41,21 @@ export default function Home() {
 
         (entries) => {
 
-
           entries.forEach(
             (entry) => {
 
-
               if (entry.isIntersecting) {
-
 
                 const id =
                   entry.target.id;
 
 
+                entry.target.classList.add(
+                  "active"
+                );
+
 
                 setActiveSection(id);
-
 
 
                 window.history.replaceState(
@@ -70,24 +64,19 @@ export default function Home() {
                   `#${id}`
                 );
 
-
               }
-
 
             }
           );
-
 
         },
 
         {
           root: scrollContainer,
-
           threshold: 0.6,
         }
 
       );
-
 
 
     sections.forEach(
@@ -97,7 +86,6 @@ export default function Home() {
 
       }
     );
-
 
 
     return () => {
@@ -110,14 +98,15 @@ export default function Home() {
   }, [setActiveSection]);
 
 
-
   return (
     <>
+
       <Hero />
 
       <RecommendationBox />
 
       <Shop />
+
     </>
   );
 }

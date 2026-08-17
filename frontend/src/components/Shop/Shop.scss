@@ -7,35 +7,52 @@
 
   scroll-snap-align: start;
 
-
   display: flex;
 
   flex-direction: column;
 
   justify-content: center;
 
-
   padding: 80px 40px;
 
-
-  background: vars.$bg-dark;
+  background: vars.$bg-main;
 
 
 
   &__header {
 
-    margin-bottom: 40px;
+    margin-bottom: 50px;
+
+    text-align: center;
+
 
 
     h2 {
 
-      font-size: 42px;
+      font-size: 48px;
 
-      color: vars.$text-main;
+      font-weight: 900;
 
-      margin-bottom: 10px;
+      letter-spacing: 3px;
+
+      text-transform: uppercase;
+
+      margin-bottom: 15px;
+
+
+      background: linear-gradient(
+        90deg,
+        #00ff88,
+        #00b86b
+      );
+
+
+      -webkit-background-clip: text;
+
+      -webkit-text-fill-color: transparent;
 
     }
+
 
 
     p {
@@ -44,9 +61,17 @@
 
       font-size: 18px;
 
+      letter-spacing: 1px;
+
+      max-width: 600px;
+
+      margin: 0 auto;
+
     }
 
   }
+
+
 
 
 
@@ -54,14 +79,17 @@
 
     display: grid;
 
-    grid-template-columns:
-      repeat(
-        auto-fit,
-        minmax(280px, 1fr)
-      );
+
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(260px, 300px)
+    );
 
 
-    gap: 30px;
+    gap: 35px;
+
+
+    justify-content: center;
 
   }
 
