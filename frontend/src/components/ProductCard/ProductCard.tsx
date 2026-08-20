@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+
+import { useCart } from "@/context/CartContext";
 
 import "./ProductCard.scss";
 
@@ -22,7 +25,26 @@ export default function ProductCard({
 }: ProductCardProps) {
   const { t } = useTranslation();
 
-  console.log("PRODUCT CARD IMAGE:", image);
+  const { addToCart, loading } = useCart();
+
+  const [added, setAdded] = useState(false);
+
+  const handleAddToCart = async () => {
+    try {
+      await addToCart(id);
+
+      setAdded(true);
+
+      setTimeout(() => {
+        setAdded(false);
+      }, 3000);
+    } catch (error) {
+      console.error(
+        "Failed to add product to cart:",
+        error
+      );
+    }
+  };
 
   return (
     <article className="product-card">
@@ -64,6 +86,33 @@ export default function ProductCard({
         </Link>
 
       </div>
+
+      <button
+        type="button"
+        className="product-card__cart"
+        disabled={loading}
+        onClick={handleAddToCart}
+      >
+        {loading
+          ? t("cart.adding")
+          : t("cart.addToCart")}
+      </button>
+
+      {added && (
+        <div className="product-card__notification">
+          <span>
+            ✓
+          </span>
+
+          <span>
+            {t("cart.added")}
+          </span>
+
+          <Link to="/cart">
+            {t("cart.goToCart")}
+          </Link>
+        </div>
+      )}
 
     </article>
   );
