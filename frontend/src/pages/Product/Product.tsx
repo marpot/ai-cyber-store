@@ -85,6 +85,9 @@ export default function Product() {
       null
     );
 
+  const [addedToCart, setAddedToCart] =
+    useState(false);
+
   /*
    * Powrót do sklepu.
    */
@@ -211,8 +214,10 @@ export default function Product() {
   if (loading) {
     return (
       <section className="product-page">
+
         <button
           className="product-page__back"
+          type="button"
           onClick={handleBack}
         >
           ←{" "}
@@ -222,12 +227,15 @@ export default function Product() {
         </button>
 
         <div className="product-page__content">
+
           <h1>
             {t(
               "shop.loading"
             )}
           </h1>
+
         </div>
+
       </section>
     );
   }
@@ -242,8 +250,10 @@ export default function Product() {
   ) {
     return (
       <section className="product-page">
+
         <button
           className="product-page__back"
+          type="button"
           onClick={handleBack}
         >
           ←{" "}
@@ -253,6 +263,7 @@ export default function Product() {
         </button>
 
         <div className="product-page__content">
+
           <h1>
             {t(
               "product.notFound"
@@ -279,7 +290,9 @@ export default function Product() {
             )}
             : {API_URL}
           </p>
+
         </div>
+
       </section>
     );
   }
@@ -303,13 +316,56 @@ export default function Product() {
     ) / 100;
 
   /*
+   * Dodanie produktu do koszyka.
+   */
+
+  const handleAddToCart = async () => {
+    try {
+      setAddedToCart(false);
+
+      console.log(
+        "Adding WooCommerce product:",
+        product.id
+      );
+
+      await addToCart(
+        product.id
+      );
+
+      /*
+       * Produkt został poprawnie
+       * dodany do koszyka.
+       */
+
+      setAddedToCart(true);
+
+      /*
+       * Ukrycie komunikatu
+       * po 3 sekundach.
+       */
+
+      setTimeout(() => {
+        setAddedToCart(false);
+      }, 3000);
+
+    } catch (error) {
+      console.error(
+        "Could not add product to cart:",
+        error
+      );
+    }
+  };
+
+  /*
    * Widok produktu.
    */
 
   return (
     <section className="product-page">
+
       <button
         className="product-page__back"
+        type="button"
         onClick={handleBack}
       >
         ←{" "}
@@ -322,6 +378,7 @@ export default function Product() {
 
         {product.images?.[0]?.src && (
           <div className="product-page__image">
+
             <img
               src={
                 product.images[0].src
@@ -331,6 +388,7 @@ export default function Product() {
                 product.name
               }
             />
+
           </div>
         )}
 
@@ -350,6 +408,7 @@ export default function Product() {
 
           {product.is_on_sale && (
             <span className="product-page__regular-price">
+
               {regularPrice.toFixed(
                 2
               )}{" "}
@@ -357,10 +416,12 @@ export default function Product() {
                 product.prices
                   .currency_symbol
               }
+
             </span>
           )}
 
           <span>
+
             {price.toFixed(
               2
             )}{" "}
@@ -368,51 +429,55 @@ export default function Product() {
               product.prices
                 .currency_symbol
             }
+
           </span>
 
         </div>
 
         {product.is_in_stock &&
           product.is_purchasable && (
-            <button
-              className="product-page__cart"
-              type="button"
-              disabled={
-                cartLoading
-              }
-              onClick={async () => {
-                try {
-                  console.log(
-                    "Adding WooCommerce product:",
-                    product.id
-                  );
 
-                  await addToCart(
-                    product.id
-                  );
+            <>
 
-                  navigate(
-                    "/cart"
-                  );
-                } catch (error) {
-                  console.error(
-                    "Could not add product to cart:",
-                    error
-                  );
+              <button
+                className="product-page__cart"
+                type="button"
+                disabled={
+                  cartLoading
                 }
-              }}
-            >
-              {cartLoading
-                ? t(
-                    "cart.adding"
-                  )
-                : t(
-                    "product.addToCart"
+                onClick={
+                  handleAddToCart
+                }
+              >
+
+                {cartLoading
+                  ? t(
+                      "cart.adding"
+                    )
+                  : t(
+                      "product.addToCart"
+                    )}
+
+              </button>
+
+              {addedToCart && (
+                <div
+                  className="product-page__success"
+                  role="status"
+                >
+                  ✓{" "}
+                  {t(
+                    "cart.added"
                   )}
-            </button>
+                </div>
+              )}
+
+            </>
+
           )}
 
       </div>
+
     </section>
   );
 }
