@@ -35,9 +35,13 @@
     "title": "Cart",
     "empty": "Your cart is empty",
     "continueShopping": "Continue shopping",
+    "back": "Back to shop",
     "total": "Total",
     "remove": "Remove",
     "checkout": "Proceed to checkout",
-    "adding": "Adding..."
+    "addToCart": "Add to cart",
+    "adding": "Adding...",
+    "added": "Added to cart",
+    "goToCart": "Go to cart"
   }
 }

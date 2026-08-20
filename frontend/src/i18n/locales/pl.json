@@ -38,6 +38,10 @@
     "back": "Wróć do sklepu",
     "total": "Razem",
     "remove": "Usuń",
-    "checkout": "Przejdź do płatności"
+    "checkout": "Przejdź do płatności",
+    "addToCart": "Dodaj do koszyka",
+    "adding": "Dodawanie...",
+    "added": "Dodano do koszyka",
+    "goToCart": "Przejdź do koszyka"
   }
 }
