@@ -1,5 +1,7 @@
 import {
   FormEvent,
+  useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -23,6 +25,8 @@ interface RecommendedProduct {
 export default function RecommendationBox() {
   const { t } = useTranslation();
 
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -40,6 +44,18 @@ export default function RecommendationBox() {
 
   const [products, setProducts] =
     useState<RecommendedProduct[]>([]);
+
+  /*
+   * Automatycznie przewijamy chat
+   * do ostatniej wiadomości po każdej
+   * zmianie historii wiadomości.
+   */
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [messages]);
 
   const handleSubmit = async (
     event: FormEvent<HTMLFormElement>
@@ -167,6 +183,9 @@ export default function RecommendationBox() {
 
             </div>
           )}
+
+          {/* Punkt docelowy automatycznego scrollowania */}
+          <div ref={chatEndRef} />
 
         </div>
 
