@@ -1,15 +1,18 @@
 @use "./variables" as *;
+
 @use "./reset";
 
 
 html {
+
   scroll-behavior: smooth;
+
 }
 
 
 body {
 
-  background: $bg-dark;
+  background: $bg-main;
 
   color: $text-main;
 
@@ -42,32 +45,19 @@ body {
 
   scroll-behavior: smooth;
 
+  background: $bg-main;
+
 }
 
 
-
 .page-scroll > section {
+
+  position: relative;
 
   scroll-snap-align: start;
 
   scroll-snap-stop: always;
 
-  opacity: 0.85;
-
-  transform: scale(0.98);
-
-  transition:
-    opacity 0.6s ease,
-    transform 0.6s ease;
-
-}
-
-
-
-.page-scroll > section.active {
-
-  opacity: 1;
-
-  transform: scale(1);
+  background: $bg-main;
 
 }
