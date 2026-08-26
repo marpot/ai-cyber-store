@@ -1,6 +1,7 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
@@ -30,6 +31,95 @@ export function ScrollProvider({
     activeSection,
     setActiveSection,
   ] = useState("home");
+
+  /*
+   * Obserwujemy sekcje znajdujące się
+   * wewnątrz głównego kontenera scrollowania.
+   *
+   * Dzięki temu activeSection zmienia się
+   * również podczas ręcznego przewijania strony.
+   */
+  useEffect(() => {
+    const container =
+      document.querySelector(
+        ".page-scroll"
+      ) as HTMLElement | null;
+
+    if (!container) {
+      console.warn(
+        "Scroll container not found: .page-scroll"
+      );
+
+      return;
+    }
+
+    const sections =
+      container.querySelectorAll<HTMLElement>(
+        "section[id]"
+      );
+
+    if (!sections.length) {
+      return;
+    }
+
+    const observer =
+      new IntersectionObserver(
+        (entries) => {
+          const visibleSections =
+            entries
+              .filter(
+                (entry) =>
+                  entry.isIntersecting
+              )
+              .sort(
+                (a, b) =>
+                  b.intersectionRatio -
+                  a.intersectionRatio
+              );
+
+          if (
+            visibleSections.length > 0
+          ) {
+            const section =
+              visibleSections[0]
+                .target as HTMLElement;
+
+            setActiveSection(
+              section.id
+            );
+          }
+        },
+        {
+          root: container,
+
+          /*
+           * Sekcja jest uznawana za aktywną,
+           * gdy znajduje się w centralnej części
+           * kontenera.
+           */
+          rootMargin:
+            "-20% 0px -60% 0px",
+
+          threshold: [
+            0,
+            0.25,
+            0.5,
+            0.75,
+            1,
+          ],
+        }
+      );
+
+    sections.forEach(
+      (section) => {
+        observer.observe(section);
+      }
+    );
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const scrollTo = (
     id: string
