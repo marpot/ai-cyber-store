@@ -69,8 +69,8 @@ export default function Product() {
   } = useCart();
 
   const API_URL =
-    import.meta.env
-      .VITE_WP_API_URL;
+    import.meta.env.VITE_WP_API_URL ||
+    "http://localhost:8080";
 
   const [product, setProduct] =
     useState<ProductData | null>(

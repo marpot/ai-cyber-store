@@ -1,7 +1,9 @@
 @use "@/styles/variables" as vars;
 
 .recommendations {
+  height: calc(100vh - 70px);
   min-height: calc(100vh - 70px);
+  max-height: calc(100vh - 70px);
 
   scroll-snap-align: start;
 
@@ -9,9 +11,9 @@
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 
-  padding: 70px 40px;
+  padding: 20px 40px 24px;
 
   background: vars.$bg-main;
 
@@ -22,17 +24,19 @@
   // --------------------------------------------------
 
   &__header {
-    margin-bottom: 35px;
+    flex-shrink: 0;
+
+    margin-bottom: 16px;
 
     text-align: center;
 
     h2 {
-      margin: 0 0 15px;
+      margin: 0 0 6px;
 
-      font-size: 48px;
+      font-size: clamp(24px, 3.2vw, 36px);
       font-weight: 900;
 
-      letter-spacing: 3px;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
 
       background: linear-gradient(
@@ -55,8 +59,8 @@
 
       color: vars.$text-muted;
 
-      font-size: 18px;
-      letter-spacing: 1px;
+      font-size: clamp(13px, 1.4vw, 15px);
+      letter-spacing: 0.5px;
     }
   }
 
@@ -65,10 +69,11 @@
   // --------------------------------------------------
 
   &__assistant {
-    width: 100%;
-    max-width: 1200px;
+    flex: 1;
+    min-height: 0;
 
-    height: 650px;
+    width: 100%;
+    max-width: 1100px;
 
     margin: 0 auto;
 
@@ -79,7 +84,7 @@
 
     border: 1px solid rgba(0, 255, 136, 0.25);
 
-    border-radius: 20px;
+    border-radius: 18px;
 
     background:
       linear-gradient(
@@ -132,7 +137,9 @@
   // --------------------------------------------------
 
   &__assistant-header {
-    min-height: 60px;
+    flex-shrink: 0;
+
+    min-height: 50px;
 
     box-sizing: border-box;
 
@@ -142,7 +149,7 @@
 
     justify-content: space-between;
 
-    padding: 0 22px;
+    padding: 0 20px;
 
     border-bottom:
       1px solid rgba(0, 255, 136, 0.15);
@@ -252,7 +259,7 @@
 
     flex-direction: column;
 
-    max-width: 75%;
+    max-width: 85%;
 
     animation:
       message-in 0.3s ease;
@@ -281,22 +288,124 @@
   }
 
   &__message-content {
-    padding: 12px 16px;
+    padding: 14px 18px;
 
     border: 1px solid
-      rgba(0, 255, 136, 0.12);
+      rgba(0, 255, 136, 0.15);
 
-    border-radius: 12px;
+    border-radius: 14px;
 
     background:
       rgba(0, 255, 136, 0.04);
 
     color:
-      rgba(255, 255, 255, 0.85);
+      rgba(255, 255, 255, 0.9);
 
     font-size: 14px;
 
     line-height: 1.5;
+  }
+
+  &__message-text {
+    word-break: break-word;
+  }
+
+  &__chat-products {
+    margin-top: 14px;
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(auto-fit, minmax(240px, 1fr));
+
+    gap: 10px;
+  }
+
+  &__chat-product {
+    padding: 12px 14px;
+
+    border: 1px solid
+      rgba(0, 255, 136, 0.22);
+
+    border-radius: 10px;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(0, 255, 136, 0.07),
+        rgba(2, 18, 12, 0.75)
+      );
+
+    box-shadow:
+      0 3px 12px rgba(0, 0, 0, 0.35);
+
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+
+      border-color:
+        rgba(0, 255, 136, 0.55);
+
+      box-shadow:
+        0 5px 18px rgba(0, 255, 136, 0.15);
+    }
+  }
+
+  &__chat-product-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 6px;
+  }
+
+  &__chat-product-icon {
+    font-size: 14px;
+
+    line-height: 1;
+  }
+
+  &__chat-product-title {
+    flex: 1;
+
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+  }
+
+  &__chat-product-price {
+    color: #00ff88;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    white-space: nowrap;
+
+    text-shadow:
+      0 0 10px rgba(0, 255, 136, 0.35);
+  }
+
+  &__chat-product-desc {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.7);
+
+    font-size: 12px;
+
+    line-height: 1.4;
   }
 
   &--user {
@@ -357,6 +466,8 @@
   // --------------------------------------------------
 
   &__input {
+    flex-shrink: 0;
+
     position: relative;
 
     z-index: 2;
@@ -365,7 +476,7 @@
 
     gap: 10px;
 
-    padding: 15px;
+    padding: 12px 15px;
 
     border-top:
       1px solid rgba(0, 255, 136, 0.15);
@@ -463,82 +574,7 @@
     }
   }
 
-  // --------------------------------------------------
-  // RECOMMENDED PRODUCTS
-  // --------------------------------------------------
 
-  &__products {
-    width: 100%;
-
-    max-width: 1200px;
-
-    margin: 30px auto 0;
-  }
-
-  &__products > h3 {
-    margin-bottom: 15px;
-
-    color: #00ff88;
-
-    font-size: 18px;
-
-    letter-spacing: 2px;
-
-    text-transform: uppercase;
-  }
-
-  &__products-grid {
-    display: grid;
-
-    grid-template-columns:
-      repeat(3, 1fr);
-
-    gap: 15px;
-  }
-
-  &__product {
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 12px;
-
-    border:
-      1px solid
-      rgba(0, 255, 136, 0.15);
-
-    border-radius: 12px;
-
-    background:
-      rgba(0, 255, 136, 0.03);
-
-    img {
-      width: 55px;
-      height: 55px;
-
-      object-fit: contain;
-
-      border-radius: 8px;
-    }
-
-    h4 {
-      margin: 0 0 5px;
-
-      color: #fff;
-
-      font-size: 13px;
-    }
-
-    span {
-      color: #00ff88;
-
-      font-size: 13px;
-
-      font-weight: 800;
-    }
-  }
 }
 
 // --------------------------------------------------
@@ -603,11 +639,6 @@
     &__assistant {
       height: 520px;
     }
-
-    &__products-grid {
-      grid-template-columns:
-        repeat(2, 1fr);
-    }
   }
 }
 
@@ -658,11 +689,15 @@
     }
 
     &__message {
-      max-width: 90%;
+      max-width: 95%;
     }
 
     &__message-content {
       font-size: 13px;
+    }
+
+    &__chat-products {
+      grid-template-columns: 1fr;
     }
 
     &__input {
@@ -677,10 +712,6 @@
       button {
         width: 44px;
       }
-    }
-
-    &__products-grid {
-      grid-template-columns: 1fr;
     }
   }
 }
