@@ -1,11 +1,14 @@
 import {
-  FormEvent,
   useEffect,
   useRef,
   useState,
 } from "react";
+import type { FormEvent } from "react";
 
 import { useTranslation } from "react-i18next";
+
+import { getRecommendation } from "../../api/recommendation.ts";
+import type { RecommendationResponse } from "../../api/recommendation.ts";
 
 import "./RecommendationBox.scss";
 
@@ -19,6 +22,8 @@ interface RecommendedProduct {
   id: number;
   name: string;
   price: string;
+  category: string;
+  description: string;
   image?: string;
 }
 
@@ -86,29 +91,50 @@ export default function RecommendationBox() {
     setInput("");
     setLoading(true);
 
-    /*
-     * MOCK
-     *
-     * Tymczasowo symulujemy odpowiedź AI.
-     *
-     * W kolejnym kroku zastąpimy ten fragment
-     * requestem do FastAPI.
-     */
+    try {
+      /*
+       * Wysyłamy żądanie do FastAPI
+       * z pytaniem użytkownika
+       */
+      const response: RecommendationResponse =
+        await getRecommendation(message);
 
-    setTimeout(() => {
+      /*
+       * Dodajemy odpowiedź AI do rozmowy
+       */
       setMessages((previous) => [
         ...previous,
         {
           id: Date.now() + 1,
           role: "ai",
-          content: t(
-            "recommendations.mockResponse"
-          ),
+          content: response.message,
         },
       ]);
 
+      /*
+       * Aktualizujemy listę rekomendowanych produktów
+       */
+      if (response.products && response.products.length > 0) {
+        setProducts(response.products);
+      }
+    } catch (error) {
+      console.error("Error getting recommendation:", error);
+
+      /*
+       * Wyświetlamy komunikat o błędzie
+       */
+      setMessages((previous) => [
+        ...previous,
+        {
+          id: Date.now() + 1,
+          role: "ai",
+          content: t("recommendations.error") ||
+            "Sorry, I couldn't process your request. Please try again.",
+        },
+      ]);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -251,12 +277,16 @@ export default function RecommendationBox() {
                     />
                   )}
 
-                  <div>
+                  <div className="recommendations__product-info">
                     <h4>
                       {product.name}
                     </h4>
 
-                    <span>
+                    <p className="recommendations__product-description">
+                      {product.description}
+                    </p>
+
+                    <span className="recommendations__product-price">
                       {product.price}
                     </span>
                   </div>

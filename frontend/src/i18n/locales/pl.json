@@ -15,7 +15,11 @@
 
   "recommendations": {
     "title": "Rekomendacje AI",
-    "description": "Znajdź najlepsze rozwiązania bezpieczeństwa dla siebie"
+    "description": "Znajdź najlepsze rozwiązania bezpieczeństwa dla siebie",
+    "welcome": "Cześć! Jestem Twoim Asystentem AI ds. Bezpieczeństwa. Zapytaj mnie o ochronę urządzenia, bezpieczeństwo sieci lub ochronę przed malware, a zapolecę Ci idealne rozwiązania.",
+    "placeholder": "Zapytaj mnie o cyberbezpieczeństwo...",
+    "products": "Rekomendowane Produkty",
+    "error": "Przepraszam, nie mogłem przetwarzać Twojego żądania. Spróbuj ponownie."
   },
 
   "shop": {
