@@ -20,7 +20,10 @@
 
   &__back {
     position: fixed;
-    top: 30px;
+
+    // Navbar ma wysokość 70px.
+    // Przycisk znajduje się poniżej niego.
+    top: 90px;
     left: 30px;
 
     z-index: 100;
@@ -382,7 +385,9 @@
     padding: 90px 15px 40px;
 
     &__back {
-      top: 15px;
+      // Navbar = 70px
+      // Zachowujemy odstęp również na telefonie.
+      top: 85px;
       left: 15px;
 
       padding: 8px 15px;

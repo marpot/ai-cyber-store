@@ -15,7 +15,11 @@
 
   "recommendations": {
     "title": "AI Recommendations",
-    "description": "Find the best security solutions for your needs"
+    "description": "Find the best security solutions for your needs",
+    "welcome": "Hello! I'm your AI Security Assistant. Ask me about device protection, network security, or malware prevention, and I'll recommend the perfect solutions for you.",
+    "placeholder": "Ask me about cybersecurity...",
+    "products": "Recommended Products",
+    "error": "Sorry, I couldn't process your request. Please try again."
   },
 
   "shop": {

@@ -1,0 +1,31 @@
+text,intent,language
+chcę zabezpieczyć laptopa,device_security,pl
+jak zabezpieczyć komputer,device_security,pl
+potrzebuję ochrony laptopa,device_security,pl
+jak ochronić mój komputer,device_security,pl
+chcę zabezpieczyć komputer,device_security,pl
+how can I protect my laptop,device_security,en
+how can I secure my computer,device_security,en
+I need protection for my laptop,device_security,en
+how do I protect my computer,device_security,en
+I want to secure my computer,device_security,en
+jak zabezpieczyć router,network_security,pl
+jak zabezpieczyć sieć wifi,network_security,pl
+chcę ochrony mojej sieci,network_security,pl
+jak chronić router,network_security,pl
+potrzebuję zabezpieczyć wifi,network_security,pl
+how can I secure my router,network_security,en
+how can I protect my wifi network,network_security,en
+I need network protection,network_security,en
+how do I secure my wifi,network_security,en
+I want to protect my router,network_security,en
+jak usunąć wirusa,malware_protection,pl
+mam wirusa na komputerze,malware_protection,pl
+jak chronić komputer przed wirusami,malware_protection,pl
+potrzebuję ochrony przed malware,malware_protection,pl
+komputer został zainfekowany,malware_protection,pl
+how do I remove a virus,malware_protection,en
+my computer has a virus,malware_protection,en
+how can I protect my computer from malware,malware_protection,en
+I need malware protection,malware_protection,en
+my computer is infected,malware_protection,en

@@ -6,3 +6,6 @@ pydantic
 python-dotenv
 openai
 httpx
+scikit-learn
+joblib
+pandas

@@ -10,4 +10,18 @@ export default defineConfig({
       "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
+
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://recommendation-service:8000",
+        changeOrigin: true,
+        rewrite: (path) => path,
+      },
+      "/health": {
+        target: "http://recommendation-service:8000",
+        changeOrigin: true,
+      },
+    },
+  },
 });
