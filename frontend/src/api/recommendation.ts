@@ -17,7 +17,8 @@ export interface RecommendationResponse {
  * and product recommendations based on the intent
  */
 export async function getRecommendation(
-  message: string
+  message: string,
+  language: string = "pl"
 ): Promise<RecommendationResponse> {
   try {
     const response = await fetch("/api/recommendation", {
@@ -25,7 +26,7 @@ export async function getRecommendation(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({ message, language }),
     });
 
     if (!response.ok) {
