@@ -137,7 +137,12 @@ npm run lint
 npm run lint:fix
 ```
 
-Recommendation service (planned — see TODO in repo): `pytest`.
+Recommendation service: `pytest` (with `httpx`/`pytest-cov`).
+
+```bash
+make test-pytest        # run pytest inside the container
+make test-coverage      # run pytest with coverage report
+```
 
 ## Docker commands
 
