@@ -64,7 +64,8 @@ export function CartProvider({
 }: {
   children: ReactNode;
 }) {
-  const API_URL = import.meta.env.VITE_WP_API_URL;
+  const API_URL =
+    import.meta.env.VITE_WP_API_URL || "http://localhost:8080";
 
   const [cart, setCart] =
     useState<CartData | null>(null);
