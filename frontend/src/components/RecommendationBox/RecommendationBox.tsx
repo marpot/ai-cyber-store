@@ -12,12 +12,6 @@ import type { RecommendationResponse } from "../../api/recommendation.ts";
 
 import "./RecommendationBox.scss";
 
-interface Message {
-  id: number;
-  role: "ai" | "user";
-  content: string;
-}
-
 interface RecommendedProduct {
   id: number;
   name: string;
@@ -27,8 +21,15 @@ interface RecommendedProduct {
   image?: string;
 }
 
+interface Message {
+  id: number;
+  role: "ai" | "user";
+  content: string;
+  products?: RecommendedProduct[];
+}
+
 export default function RecommendationBox() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -47,8 +48,24 @@ export default function RecommendationBox() {
   const [loading, setLoading] =
     useState(false);
 
-  const [products, setProducts] =
-    useState<RecommendedProduct[]>([]);
+  /*
+   * Aktualizujemy powitanie początkowe
+   * przy zmianie języka strony.
+   */
+  useEffect(() => {
+    setMessages((previous) => {
+      if (previous.length === 1 && previous[0].role === "ai") {
+        return [
+          {
+            id: 1,
+            role: "ai",
+            content: t("recommendations.welcome"),
+          },
+        ];
+      }
+      return previous;
+    });
+  }, [i18n.language, t]);
 
   /*
    * Automatycznie przewijamy chat
@@ -94,13 +111,13 @@ export default function RecommendationBox() {
     try {
       /*
        * Wysyłamy żądanie do FastAPI
-       * z pytaniem użytkownika
+       * z pytaniem użytkownika oraz aktualnym językiem
        */
       const response: RecommendationResponse =
-        await getRecommendation(message);
+        await getRecommendation(message, i18n.language);
 
       /*
-       * Dodajemy odpowiedź AI do rozmowy
+       * Dodajemy odpowiedź AI wraz z rekomendowanymi produktami do rozmowy
        */
       setMessages((previous) => [
         ...previous,
@@ -108,15 +125,12 @@ export default function RecommendationBox() {
           id: Date.now() + 1,
           role: "ai",
           content: response.message,
+          products:
+            response.products && response.products.length > 0
+              ? response.products
+              : undefined,
         },
       ]);
-
-      /*
-       * Aktualizujemy listę rekomendowanych produktów
-       */
-      if (response.products && response.products.length > 0) {
-        setProducts(response.products);
-      }
     } catch (error) {
       console.error("Error getting recommendation:", error);
 
@@ -188,7 +202,34 @@ export default function RecommendationBox() {
                 </div>
 
                 <div className="recommendations__message-content">
-                  {message.content}
+                  <div className="recommendations__message-text">
+                    {message.content}
+                  </div>
+
+                  {message.products && message.products.length > 0 && (
+                    <div className="recommendations__chat-products">
+                      {message.products.map((product) => (
+                        <div
+                          key={product.id}
+                          className="recommendations__chat-product"
+                        >
+                          <div className="recommendations__chat-product-header">
+                            <span className="recommendations__chat-product-icon">🛡️</span>
+                            <h4 className="recommendations__chat-product-title">
+                              {product.name}
+                            </h4>
+                            <span className="recommendations__chat-product-price">
+                              {product.price}
+                            </span>
+                          </div>
+
+                          <p className="recommendations__chat-product-desc">
+                            {product.description}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )
@@ -247,58 +288,6 @@ export default function RecommendationBox() {
         </form>
 
       </div>
-
-      {products.length > 0 && (
-        <div className="recommendations__products">
-
-          <h3>
-            {t(
-              "recommendations.products"
-            )}
-          </h3>
-
-          <div className="recommendations__products-grid">
-
-            {products.map(
-              (product) => (
-                <article
-                  key={product.id}
-                  className="recommendations__product"
-                >
-
-                  {product.image && (
-                    <img
-                      src={
-                        product.image
-                      }
-                      alt={
-                        product.name
-                      }
-                    />
-                  )}
-
-                  <div className="recommendations__product-info">
-                    <h4>
-                      {product.name}
-                    </h4>
-
-                    <p className="recommendations__product-description">
-                      {product.description}
-                    </p>
-
-                    <span className="recommendations__product-price">
-                      {product.price}
-                    </span>
-                  </div>
-
-                </article>
-              )
-            )}
-
-          </div>
-
-        </div>
-      )}
 
     </section>
   );
