@@ -20,6 +20,7 @@ from pydantic import BaseModel, Field
 from .config import SETTINGS
 from .fuzzy import FuzzyMatcher
 from .language import detect_language
+from .llm import chat as llm_chat
 from .nlp.predict import ALLOWED_INTENTS, DEFAULT_INTENT, predict_intent
 from .products import ProductFetcher
 
@@ -190,13 +191,14 @@ def get_recommendation(request: RecommendationRequest) -> dict:
     if not products:
         # Last resort — surface the default help message.
         default = DEFAULT_RESPONSES.get(language, DEFAULT_RESPONSES["pl"])
+        llm_message = llm_chat(request.message)
         return {
             "intent": intent,
             "confidence": round(confidence, 3),
             "language": language,
-            "message": default["message"],
+            "message": llm_message or default["message"],
             "products": [],
-            "fallback": "default",
+            "fallback": "llm" if llm_message else "default",
         }
 
     return {

@@ -58,8 +58,9 @@ class Settings:
     wordpress_consumer_key: str
     wordpress_consumer_secret: str
     confidence_threshold: float
-    openai_api_key: str
-    openai_model: str
+    llm_api_key: str
+    llm_base_url: str
+    llm_model: str
     cors_allow_origins: list[str]
     model_path: Path
     static_products_path: Path
@@ -77,8 +78,13 @@ class Settings:
             confidence_threshold=_getenv_float(
                 "RECOMMENDATION_CONFIDENCE_THRESHOLD", 0.45
             ),
-            openai_api_key=_getenv_str("OPENAI_API_KEY"),
-            openai_model=_getenv_str("OPENAI_MODEL", "gpt-4o-mini"),
+            llm_api_key=_getenv_str("LLM_API_KEY"),
+            llm_base_url=_getenv_str(
+                "LLM_BASE_URL", "https://openrouter.ai/api/v1"
+            ),
+            llm_model=_getenv_str(
+                "LLM_MODEL", "meta-llama/llama-3.1-8b-instruct:free"
+            ),
             cors_allow_origins=_getenv_list(
                 "CORS_ALLOW_ORIGINS",
                 ["http://localhost:5173", "http://localhost:8080"],
