@@ -9,9 +9,12 @@ import pytest
 SERVICE_ROOT = Path(__file__).resolve().parent.parent
 APP_ROOT = SERVICE_ROOT / "app"
 
-# Make `app.*` imports work without installing the package.
-if str(SERVICE_ROOT) not in sys.path:
-    sys.path.insert(0, str(SERVICE_ROOT))
+# Ensure /app is on sys.path so module-style imports (used by tests
+# running inside the docker container where the code is flat in /app)
+# work the same as package-style imports (used locally where code lives
+# in recommendation-service/app/).
+if str(APP_ROOT) not in sys.path:
+    sys.path.insert(0, str(APP_ROOT))
 
 
 @pytest.fixture(scope="session")

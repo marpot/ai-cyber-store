@@ -5,9 +5,15 @@ from app.products import ProductFetcher
 def test_fuzzy_matches_polish_phrase():
     fetcher = ProductFetcher()
     matcher = FuzzyMatcher(fetcher)
-    matches = matcher.search("potrzebuję programu antywirusowego", limit=3, min_score=40)
+    # Score threshold intentionally low — long Polish phrases get partial
+    # matches; we only care that the matcher returns the right *category*.
+    matches = matcher.search(
+        "potrzebuję programu antywirusowego", limit=3, min_score=30
+    )
     assert matches, "expected fuzzy match for Polish antivirus phrase"
     assert all(m.score <= 1.0 for m in matches)
+    # The category pre-filter must have steered the matcher to malware products.
+    assert all(m.product.get("category") == "malware_protection" for m in matches)
 
 
 def test_fuzzy_matches_english_phrase():

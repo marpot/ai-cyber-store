@@ -71,15 +71,17 @@ services:
     restart: always
     working_dir: /app
     volumes:
-      - ./recommendation-service/app:/app
+      - ./recommendation-service:/app
     env_file:
       - path: ./recommendation-service/.env
         required: false
     environment:
+      PYTHONPATH: /app
       WORDPRESS_API_URL: ${WORDPRESS_API_URL:-http://wordpress:80}
       RECOMMENDATION_CONFIDENCE_THRESHOLD: ${RECOMMENDATION_CONFIDENCE_THRESHOLD:-0.45}
-      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
-      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://openrouter.ai/api/v1}
+      LLM_MODEL: ${LLM_MODEL:-meta-llama/llama-3.1-8b-instruct:free}
       CORS_ALLOW_ORIGINS: ${CORS_ALLOW_ORIGINS:-http://localhost:5173,http://localhost:8080}
     ports:
       - "8000:8000"

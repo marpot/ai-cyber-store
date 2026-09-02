@@ -20,7 +20,7 @@ from typing import Iterable
 
 import httpx
 
-from .config import SETTINGS
+from .config import get_settings
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ SYSTEM_PROMPT = (
 
 
 def llm_enabled() -> bool:
-    return bool(SETTINGS.llm_api_key)
+    return bool(get_settings().llm_api_key)
 
 
 def chat(
@@ -47,20 +47,21 @@ def chat(
     ``history`` is a sequence of ``{"role": ..., "content": ...}`` dicts
     following the OpenAI chat-completions schema.
     """
-    if not llm_enabled():
+    settings = get_settings()
+    if not settings.llm_api_key:
         return None
 
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     messages.extend(history)
     messages.append({"role": "user", "content": user_message})
 
-    url = f"{SETTINGS.llm_base_url.rstrip('/')}/chat/completions"
+    url = f"{settings.llm_base_url.rstrip('/')}/chat/completions"
     headers = {
-        "Authorization": f"Bearer {SETTINGS.llm_api_key}",
+        "Authorization": f"Bearer {settings.llm_api_key}",
         "Content-Type": "application/json",
     }
     payload = {
-        "model": SETTINGS.llm_model,
+        "model": settings.llm_model,
         "messages": messages,
         "temperature": 0.4,
         "max_tokens": 200,

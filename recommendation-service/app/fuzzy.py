@@ -25,12 +25,51 @@ class FuzzyMatcher:
     def __init__(self, fetcher: ProductFetcher | None = None) -> None:
         self.fetcher = fetcher or ProductFetcher()
 
-    def search(self, query: str, *, limit: int = 3, min_score: float = 55.0) -> list[FuzzyMatch]:
+    def search(self, query: str, *, limit: int = 3, min_score: float = 30.0) -> list[FuzzyMatch]:
         if not query or not query.strip():
             return []
         products = self.fetcher.get_all()
         if not products:
             return []
+
+        # Cheap keyword pre-filter: if the query contains a known category
+        # hint word, restrict the candidate pool to that category. This
+        # avoids the fuzzy ranker scoring e.g. "antywirus" highest against
+        # "Uwierzytelnianie Dwuskładnikowe" just because of edit distance.
+        HINT_TO_CATEGORY = {
+            "antywirus": "malware_protection",
+            "antivirus": "malware_protection",
+            "virus": "malware_protection",
+            "malware": "malware_protection",
+            "trojan": "malware_protection",
+            "ransomware": "malware_protection",
+            "wifi": "network_security",
+            "router": "network_security",
+            "network": "network_security",
+            "sieć": "network_security",
+            "router": "network_security",
+            "laptop": "device_security",
+            "komputer": "device_security",
+            "computer": "device_security",
+            "telefon": "device_security",
+            "phone": "device_security",
+            "mobile": "device_security",
+            "hasło": "password_security",
+            "hasła": "password_security",
+            "password": "password_security",
+            "2fa": "password_security",
+            "vpn": "privacy",
+            "prywatność": "privacy",
+            "privacy": "privacy",
+        }
+        lowered = query.lower()
+        category_hint = None
+        for hint, category in HINT_TO_CATEGORY.items():
+            if hint in lowered:
+                category_hint = category
+                break
+        if category_hint:
+            products = [p for p in products if p.get("category") == category_hint] or products
 
         choices: dict[str, dict] = {}
         for product in products:

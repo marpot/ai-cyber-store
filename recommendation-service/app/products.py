@@ -60,6 +60,8 @@ class ProductFetcher:
 
     def search(self, query: str, *, limit: int = 5) -> list[dict[str, Any]]:
         """Naive substring fallback used when fuzzy ranking is not enabled."""
+        if not query or not query.strip():
+            return []
         lowered = query.lower()
         matches = []
         for product in self.get_all():
