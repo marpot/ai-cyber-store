@@ -6,8 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:nocheck": "vite build",
+    "typecheck": "tsc -b --noEmit",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "lint:fix": "oxlint --fix",
+    "preview": "vite preview",
+    "test": "echo \"No frontend tests yet — see TODO in README\" && exit 0"
   },
   "dependencies": {
     "i18next": "^26.3.6",

@@ -32,6 +32,24 @@ The project is built as a developer portfolio application demonstrating modern w
 
 ---
 
+# Environment Variables
+
+Copy `.env.example` files in the root, `frontend/`, and `recommendation-service/` to `.env` and fill in real values:
+
+```bash
+cp .env.example .env
+cp frontend/.env.example frontend/.env
+cp recommendation-service/.env.example recommendation-service/.env
+```
+
+`.env` files are git-ignored. Do not commit them. To rotate secrets:
+
+1. Update WordPress keys in WP admin (WooCommerce -> Settings -> Advanced -> REST API).
+2. Update `.env` in `frontend/` and `recommendation-service/`.
+3. Restart containers: `make restart`.
+
+---
+
 # Project Structure
 
 ```
@@ -98,7 +116,33 @@ http://localhost:8080
 
 ---
 
-# Development Workflow
+## Development Workflow
+
+## Code quality
+
+Frontend:
+
+```bash
+make typecheck   # tsc --noEmit
+make lint        # oxlint
+make lint-fix    # oxlint --fix
+make test        # typecheck + lint
+```
+
+Or directly inside `frontend/`:
+
+```bash
+npm run typecheck
+npm run lint
+npm run lint:fix
+```
+
+Recommendation service: `pytest` (with `httpx`/`pytest-cov`).
+
+```bash
+make test-pytest        # run pytest inside the container
+make test-coverage      # run pytest with coverage report
+```
 
 ## Docker commands
 
