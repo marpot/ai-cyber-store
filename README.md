@@ -1,40 +1,75 @@
-# AI Cyber Store
+# AI Cyber Store 🤖🛒
 
-AI Cyber Store is a full-stack e-commerce platform combining WordPress, React, FastAPI and AI-powered features.
+**Experimental e-commerce application combining React, WordPress/WooCommerce and a FastAPI recommendation service.**
 
-The project is built as a developer portfolio application demonstrating modern web development, containerization and scalable application architecture.
+AI Cyber Store is a portfolio project exploring how an AI-assisted product discovery experience can be integrated with a modern storefront and WordPress-based commerce stack.
 
-## Tech Stack
+Unlike a static AI demo, the project includes a dedicated recommendation service, multilingual product recommendations, a React chat interface and a containerized WordPress environment.
 
-### Frontend
-- React
-- TypeScript
-- Vite
-- SCSS
-- React Router
-- REST API integration
+## ✨ Implemented Features
 
-### Backend / AI Services
-- Python
-- FastAPI
-- PostgreSQL
-- AI recommendation services
+- React + TypeScript storefront foundation
+- Responsive AI recommendation chat interface
+- FastAPI recommendation service
+- Polish and English recommendation flow
+- Localized product names, descriptions and pricing
+- Product recommendation cards embedded directly in assistant messages
+- Confidence thresholding for low-confidence/general queries
+- Frontend language synchronization with the recommendation API
+- WordPress/WooCommerce API integration foundation
+- Dockerized WordPress, frontend and recommendation-service environment
+- Automatic local MySQL initialization from a development database seed
+- Frontend type checking and linting workflow
+- Pytest-based recommendation-service tests and coverage commands
 
-### CMS / E-commerce
-- WordPress
-- WooCommerce (planned)
+## 🧱 Architecture
 
-### Infrastructure
+```text
+React + TypeScript storefront
+          │
+          ├──────────────► WordPress / WooCommerce
+          │                    │
+          │                    ▼
+          │                  MySQL
+          │
+          ▼
+FastAPI Recommendation Service
+          │
+          ├── recommendation / language logic
+          ├── product matching
+          └── AI integration layer
+```
+
+The React application owns the customer-facing experience. WordPress/WooCommerce provides the commerce integration layer, while the Python service is responsible for recommendation-specific logic rather than placing AI behavior directly inside the frontend.
+
+## 🛠 Tech Stack
+
+**Frontend:** React · TypeScript · Vite · SCSS · React Router · react-i18next  
+**Backend / AI:** Python · FastAPI · PostgreSQL  
+**CMS / Commerce:** WordPress · WooCommerce · MySQL  
+**Testing / Quality:** Pytest · pytest-cov · TypeScript type checking · oxlint  
+**Infrastructure:** Docker · Docker Compose · Make
+
+## 📂 Project Structure
+
+```text
+ai-cyber-store/
+├── frontend/                 # React + TypeScript storefront
+├── recommendation-service/   # FastAPI recommendation service
+├── wordpress/                # WordPress files / integration
+├── docker-compose.yml
+├── Makefile
+└── README.md
+```
+
+## 🚀 Running Locally
+
+### Requirements
+
 - Docker
 - Docker Compose
-- MySQL
-- PostgreSQL
 
----
-
-# Environment Variables
-
-Copy `.env.example` files in the root, `frontend/`, and `recommendation-service/` to `.env` and fill in real values:
+Create local environment files from the included examples:
 
 ```bash
 cp .env.example .env
@@ -42,200 +77,74 @@ cp frontend/.env.example frontend/.env
 cp recommendation-service/.env.example recommendation-service/.env
 ```
 
-`.env` files are git-ignored. Do not commit them. To rotate secrets:
+Do not commit real `.env` files or credentials.
 
-1. Update WordPress keys in WP admin (WooCommerce -> Settings -> Advanced -> REST API).
-2. Update `.env` in `frontend/` and `recommendation-service/`.
-3. Restart containers: `make restart`.
-
----
-
-# Project Structure
-
-```
-ai-cyber-store/
-
-├── frontend/                 # React + TypeScript application
-├── recommendation-service/   # FastAPI AI recommendation service
-├── wordpress/                # WordPress files and themes
-├── docker-compose.yml
-├── Makefile
-└── README.md
-```
-
----
-
-# Running the Project
-
-## Requirements
-
-- Docker
-- Docker Compose
-
-## Start application
-
-Build and start containers:
+Build and start the application:
 
 ```bash
 docker compose up -d --build
 ```
 
-Check running services:
+Check services:
 
 ```bash
 docker compose ps
 ```
 
-Stop application:
+Stop the stack:
 
 ```bash
 docker compose down
 ```
 
----
+### Local Services
 
-# Local URLs
-
-Frontend:
-
-```
-http://localhost:5173
+```text
+Frontend:  http://localhost:5173
+FastAPI:   http://localhost:8000
+WordPress: http://localhost:8080
 ```
 
-FastAPI:
+## 🧪 Code Quality & Tests
 
-```
-http://localhost:8000
-```
-
-WordPress:
-
-```
-http://localhost:8080
-```
-
----
-
-## Development Workflow
-
-## Code quality
-
-Frontend:
+Frontend checks:
 
 ```bash
-make typecheck   # tsc --noEmit
-make lint        # oxlint
-make lint-fix    # oxlint --fix
-make test        # typecheck + lint
+make typecheck
+make lint
+make test
 ```
 
-Or directly inside `frontend/`:
+Recommendation-service tests:
 
 ```bash
-npm run typecheck
-npm run lint
-npm run lint:fix
+make test-pytest
+make test-coverage
 ```
 
-Recommendation service: `pytest` (with `httpx`/`pytest-cov`).
+Useful Docker commands are also exposed through the Makefile for building, starting and inspecting the local environment.
 
-```bash
-make test-pytest        # run pytest inside the container
-make test-coverage      # run pytest with coverage report
-```
+## 🌍 Recommendation Experience
 
-## Docker commands
+The recommendation UI supports both Polish and English. The selected frontend language is sent to the FastAPI service, allowing responses, product data and pricing presentation to follow the active locale.
 
-Start:
+Recommended products are rendered inside assistant messages, keeping the product-discovery flow conversational instead of separating AI responses from a disconnected result grid.
 
-```bash
-docker compose up -d
-```
+A confidence threshold prevents the recommendation layer from forcing a product intent when the input is a greeting or does not match the supported recommendation categories strongly enough.
 
-Rebuild after Docker changes:
+## 📌 Project Status
 
-```bash
-docker compose up -d --build
-```
+**Functional prototype / active portfolio project.**
 
-View logs:
+The recommendation service, multilingual chat experience and containerized application foundation are implemented. The repository should be treated as an experimental AI-commerce project rather than a production-ready store.
 
-```bash
-docker compose logs -f
-```
+Potential future work includes deeper WooCommerce integration, user accounts, broader catalog/search capabilities, deployment automation and monitoring.
 
----
+## 📸 Screenshots
 
-## Optional Makefile commands
+Screenshots will be added during the final portfolio-polish stage.
 
-Linux/macOS users can use:
+## 👨‍💻 Author
 
-```bash
-make up
-```
-
-```bash
-make build
-```
-
-```bash
-make logs
-```
-
----
-
-# Current Features
-
-- React frontend application
-- TypeScript configuration
-- React Router navigation
-- Application layout structure
-- SCSS styling system
-- Dockerized development environment
-- WordPress integration foundation
-- FastAPI service foundation
-
----
-
-# Planned Features
-
-- AI product assistant
-- Cybersecurity product catalog
-- AI recommendations
-- Product search
-- User accounts
-- WooCommerce integration
-- Security dashboard
-- Monitoring with Zabbix
-- Kubernetes deployment
-- CI/CD pipeline
-
----
-
-# Architecture
-
-```
-                 React + TypeScript
-                         |
-                         |
-                    FastAPI API
-                         |
-              ---------------------
-              |                   |
-         PostgreSQL          AI Services
-
-
-              WordPress + MySQL
-                    |
-              E-commerce CMS
-```
-
----
-
-# Author
-
-Marcin Potoczny
-
-GitHub:
-
-https://github.com/marpot/
+**Marcin Potoczny**  
+[GitHub profile](https://github.com/marpot)
