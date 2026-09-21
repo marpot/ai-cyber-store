@@ -79,9 +79,13 @@ dist-ssr/
 wordpress/*
 
 # Keep custom WordPress configuration
+!wordpress/Dockerfile
 !wordpress/.htaccess
 !wordpress/apache/
 !wordpress/apache/000-default.conf
+!wordpress/init/
+wordpress/init/*
+!wordpress/init/seed-products.php
 
 # Keep wp-content
 !wordpress/wp-content/

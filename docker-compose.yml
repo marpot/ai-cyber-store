@@ -1,6 +1,8 @@
 services:
   wordpress:
-    image: wordpress:latest
+    build:
+      context: ./wordpress
+      dockerfile: Dockerfile
     container_name: cyber_store_wordpress
     restart: always
     ports:
@@ -16,6 +18,7 @@ services:
       - ./wordpress/wp-content/mu-plugins:/var/www/html/wp-content/mu-plugins
       - ./wordpress/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
       - ./wordpress/.htaccess:/var/www/html/.htaccess
+      - ./wordpress/init/seed-products.php:/scripts/seed-products.php:ro
     depends_on:
       mysql:
         condition: service_healthy
