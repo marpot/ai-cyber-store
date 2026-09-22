@@ -1,3 +1,5 @@
+/* oxlint-disable react/only-export-components */
+
 import {
   createContext,
   useCallback,
@@ -54,6 +56,8 @@ interface CartContextType {
   ) => Promise<void>;
 
   refreshCart: () => Promise<void>;
+
+  beginCheckout: () => Promise<void>;
 }
 
 const CartContext =
@@ -72,34 +76,6 @@ export function CartProvider({
 
   const [loading, setLoading] =
     useState(false);
-
-  /*
-   * WooCommerce Store API
-   *
-   * Cart-Token:
-   * identyfikuje koszyk konkretnego klienta.
-   *
-   * Nonce:
-   * wymagany przez WooCommerce przy operacjach
-   * POST modyfikujących koszyk.
-   */
-
-  const getCartToken = () => {
-    return sessionStorage.getItem(
-      "wc_cart_token"
-    );
-  };
-
-  const saveCartToken = (
-    token: string | null
-  ) => {
-    if (token) {
-      sessionStorage.setItem(
-        "wc_cart_token",
-        token
-      );
-    }
-  };
 
   const getNonce = () => {
     return sessionStorage.getItem(
@@ -123,13 +99,10 @@ export function CartProvider({
    * z WooCommerce Store API.
    */
 
-  const request = async (
+  const request = useCallback(async (
     endpoint: string,
     options: RequestInit = {}
   ) => {
-    const cartToken =
-      getCartToken();
-
     const nonce =
       getNonce();
 
@@ -140,13 +113,6 @@ export function CartProvider({
       "Content-Type",
       "application/json"
     );
-
-    if (cartToken) {
-      headers.set(
-        "Cart-Token",
-        cartToken
-      );
-    }
 
     if (nonce) {
       headers.set(
@@ -161,7 +127,6 @@ export function CartProvider({
         endpoint,
         method:
           options.method || "GET",
-        cartToken: !!cartToken,
         nonce: nonce || null,
       }
     );
@@ -177,16 +142,6 @@ export function CartProvider({
       );
 
     /*
-     * WooCommerce może zwrócić
-     * nowy Cart-Token.
-     */
-
-    const newCartToken =
-      response.headers.get(
-        "Cart-Token"
-      );
-
-    /*
      * WooCommerce zwraca również Nonce.
      */
 
@@ -198,15 +153,9 @@ export function CartProvider({
     console.log(
       "WooCommerce response headers:",
       {
-        cartToken:
-          newCartToken,
         nonce:
           newNonce,
       }
-    );
-
-    saveCartToken(
-      newCartToken
     );
 
     saveNonce(
@@ -223,7 +172,7 @@ export function CartProvider({
     }
 
     return response.json();
-  };
+  }, [API_URL]);
 
   /*
    * Pobranie aktualnego koszyka.
@@ -231,7 +180,7 @@ export function CartProvider({
    * GET /cart
    *
    * Ten request również inicjalizuje
-   * Cart-Token oraz Nonce.
+   * sesję WooCommerce oraz Nonce.
    */
 
   const refreshCart =
@@ -251,7 +200,7 @@ export function CartProvider({
       } finally {
         setLoading(false);
       }
-    }, [API_URL]);
+    }, [request]);
 
   /*
    * Dodawanie produktu.
@@ -284,8 +233,6 @@ export function CartProvider({
           quantity,
           nonce:
             getNonce(),
-          cartToken:
-            getCartToken(),
         }
       );
 
@@ -393,6 +340,56 @@ export function CartProvider({
     };
 
   /*
+   * Przejście do natywnego checkoutu WooCommerce.
+   *
+   * Koszyk Store API działa w tej samej sesji cookie, dzięki czemu
+   * po przekierowaniu WooCommerce widzi te same produkty.
+   */
+
+  const beginCheckout = async () => {
+    try {
+      setLoading(true);
+
+      const currentCart = await request("");
+
+      setCart(currentCart);
+
+      if (!currentCart.items?.length) {
+        throw new Error("empty-cart");
+      }
+
+      const response = await fetch(
+        `${API_URL}/wp-json/cyber-store/v1/checkout-url`,
+        {
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `WooCommerce checkout URL ${response.status}`
+        );
+      }
+
+      const data: { url?: string } = await response.json();
+
+      if (!data.url) {
+        throw new Error("missing-checkout-url");
+      }
+
+      const checkoutUrl = new URL(data.url, API_URL);
+
+      if (!["http:", "https:"].includes(checkoutUrl.protocol)) {
+        throw new Error("invalid-checkout-url");
+      }
+
+      window.location.assign(checkoutUrl.toString());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /*
    * Inicjalizacja koszyka
    * po uruchomieniu aplikacji.
    */
@@ -410,6 +407,7 @@ export function CartProvider({
         updateQuantity,
         removeItem,
         refreshCart,
+        beginCheckout,
       }}
     >
       {children}

@@ -31,7 +31,7 @@ interface Message {
 export default function RecommendationBox() {
   const { t, i18n } = useTranslation();
 
-  const chatEndRef = useRef<HTMLDivElement>(null);
+  const chatRef = useRef<HTMLDivElement>(null);
 
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -73,9 +73,11 @@ export default function RecommendationBox() {
    * zmianie historii wiadomości.
    */
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({
+    const chat = chatRef.current;
+
+    chat?.scrollTo({
+      top: chat.scrollHeight,
       behavior: "smooth",
-      block: "end",
     });
   }, [messages]);
 
@@ -187,7 +189,7 @@ export default function RecommendationBox() {
 
         </div>
 
-        <div className="recommendations__chat">
+        <div ref={chatRef} className="recommendations__chat">
 
           {messages.map(
             (message) => (
@@ -251,9 +253,6 @@ export default function RecommendationBox() {
             </div>
           )}
 
-          {/* Punkt docelowy automatycznego scrollowania */}
-          <div ref={chatEndRef} />
-
         </div>
 
         <form
@@ -262,6 +261,7 @@ export default function RecommendationBox() {
         >
 
           <input
+            aria-label={t("recommendations.placeholder")}
             type="text"
             value={input}
             onChange={(event) =>
@@ -273,10 +273,12 @@ export default function RecommendationBox() {
               "recommendations.placeholder"
             )}
             disabled={loading}
+            maxLength={1000}
           />
 
           <button
             type="submit"
+            aria-label={t("recommendations.send")}
             disabled={
               loading ||
               !input.trim()

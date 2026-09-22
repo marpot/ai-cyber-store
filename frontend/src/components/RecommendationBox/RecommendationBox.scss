@@ -634,9 +634,16 @@
 
 @media (max-width: 900px) {
   .recommendations {
-    padding: 60px 25px;
+    height: auto;
+    min-height: calc(100vh - 70px);
+    max-height: none;
+
+    padding: 32px 25px;
+
+    overflow: visible;
 
     &__assistant {
+      flex: none;
       height: 520px;
     }
   }
@@ -648,15 +655,13 @@
 
 @media (max-width: 768px) {
   .recommendations {
-    min-height: calc(100vh - 70px);
-
-    padding: 50px 15px;
+    padding: 32px 15px;
 
     &__header {
-      margin-bottom: 25px;
+      margin-bottom: 18px;
 
       h2 {
-        font-size: 32px;
+        font-size: clamp(25px, 8vw, 32px);
 
         letter-spacing: 2px;
       }
@@ -667,7 +672,7 @@
     }
 
     &__assistant {
-      height: 440px;
+      height: 500px;
 
       border-radius: 16px;
     }
@@ -693,6 +698,8 @@
     }
 
     &__message-content {
+      max-width: 100%;
+
       font-size: 13px;
     }
 
@@ -712,6 +719,38 @@
       button {
         width: 44px;
       }
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .recommendations {
+    padding: 26px 12px;
+
+    &__assistant {
+      height: 510px;
+    }
+
+    &__assistant-header {
+      min-height: 48px;
+    }
+
+    &__chat {
+      gap: 12px;
+      padding: 14px 12px;
+    }
+
+    &__message-content {
+      padding: 12px 13px;
+    }
+
+    &__chat-product-header {
+      flex-wrap: wrap;
+    }
+
+    &__chat-product-price {
+      width: 100%;
+      padding-left: 22px;
     }
   }
 }

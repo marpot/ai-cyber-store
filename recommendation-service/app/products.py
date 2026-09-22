@@ -81,15 +81,15 @@ class ProductFetcher:
         return bool(self._cache) and (time.monotonic() - self._fetched_at) < self.cache_ttl
 
     def _fetch_remote(self) -> list[dict[str, Any]]:
-        url = f"{self.base_url}/wp-json/wc/v3/products"
-        params: dict[str, Any] = {"per_page": 50, "status": "publish"}
-        auth: tuple[str, str] | None = None
-        if self.consumer_key and self.consumer_secret:
-            auth = (self.consumer_key, self.consumer_secret)
+        # The Store API is public and is the same catalogue endpoint used by
+        # the React storefront. Local development therefore works without
+        # creating WooCommerce REST API credentials.
+        url = f"{self.base_url}/wp-json/wc/store/v1/products"
+        params: dict[str, Any] = {"per_page": 50}
 
         try:
             with httpx.Client(timeout=self.timeout) as client:
-                response = client.get(url, params=params, auth=auth)
+                response = client.get(url, params=params)
                 response.raise_for_status()
         except (httpx.HTTPError, httpx.RequestError) as exc:
             logger.warning("WooCommerce fetch failed (%s); using static catalogue", exc)
@@ -105,16 +105,20 @@ class ProductFetcher:
 
     def _normalise_remote(self, item: dict[str, Any]) -> dict[str, Any]:
         categories = item.get("categories") or []
-        category_slug = categories[0].get("slug") if categories else "general_query"
+        category_slug = _intent_for_product(item, categories)
+        prices = item.get("prices") or {}
+        price = _format_store_price(prices)
+        search_terms = _store_attribute_terms(item.get("attributes") or [])
         return {
             "id": item.get("id"),
             "name": item.get("name", ""),
             "name_pl": item.get("name", ""),
             "category": category_slug,
-            "price": item.get("price", ""),
-            "price_pl": item.get("price", ""),
+            "price": price,
+            "price_pl": price,
             "description": _strip_html(item.get("description", "")),
             "description_pl": _strip_html(item.get("description", "")),
+            "search_text": search_terms,
             "sku": item.get("sku", ""),
             "stock_status": item.get("stock_status", "instock"),
             "permalink": item.get("permalink", ""),
@@ -143,3 +147,45 @@ def _strip_html(value: str) -> str:
         elif not in_tag:
             out.append(ch)
     return "".join(out).strip()
+
+
+_SLUG_INTENTS = {
+    "safetunnel-vpn": "network_security",
+    "vaultpass-password-manager": "password_security",
+    "titankey-hardware-security-key": "password_security",
+    "sentinel-endpoint-protection": "malware_protection",
+    "cybersafe-cloud-backup": "device_security",
+}
+
+
+def _intent_for_product(
+    item: dict[str, Any],
+    categories: list[dict[str, Any]],
+) -> str:
+    slug = str(item.get("slug", ""))
+    if slug in _SLUG_INTENTS:
+        return _SLUG_INTENTS[slug]
+
+    category_slug = categories[0].get("slug") if categories else "general_query"
+    return str(category_slug).replace("-", "_")
+
+
+def _format_store_price(prices: dict[str, Any]) -> str:
+    raw_price = str(prices.get("price", ""))
+    if not raw_price:
+        return ""
+
+    minor_units = int(prices.get("currency_minor_unit", 2))
+    symbol = str(prices.get("currency_symbol", "")).strip()
+    amount = int(raw_price) / (10 ** minor_units)
+    return f"{amount:.{minor_units}f} {symbol}".strip()
+
+
+def _store_attribute_terms(attributes: list[dict[str, Any]]) -> str:
+    terms: list[str] = []
+    for attribute in attributes:
+        for term in attribute.get("terms") or []:
+            name = str(term.get("name", "")).strip()
+            if name:
+                terms.append(name)
+    return " ".join(terms)

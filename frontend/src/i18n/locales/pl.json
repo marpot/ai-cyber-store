@@ -16,8 +16,9 @@
   "recommendations": {
     "title": "Rekomendacje AI",
     "description": "Znajdź najlepsze rozwiązania bezpieczeństwa dla siebie",
-    "welcome": "Cześć! Jestem Twoim Asystentem AI ds. Bezpieczeństwa. Zapytaj mnie o ochronę urządzenia, bezpieczeństwo sieci lub ochronę przed malware, a zapolecę Ci idealne rozwiązania.",
+    "welcome": "Cześć! Jestem Twoim Asystentem AI ds. Bezpieczeństwa. Zapytaj mnie o ochronę urządzenia, bezpieczeństwo sieci lub ochronę przed malware, a polecę Ci odpowiednie rozwiązania.",
     "placeholder": "Zapytaj mnie o cyberbezpieczeństwo...",
+    "send": "Wyślij wiadomość",
     "products": "Rekomendowane Produkty",
     "error": "Przepraszam, nie mogłem przetwarzać Twojego żądania. Spróbuj ponownie."
   },
@@ -43,6 +44,9 @@
     "total": "Razem",
     "remove": "Usuń",
     "checkout": "Przejdź do płatności",
+    "checkoutLoading": "Otwieranie płatności...",
+    "checkoutError": "Nie udało się otworzyć checkoutu WooCommerce. Spróbuj ponownie.",
+    "checkoutEmpty": "Koszyk jest pusty. Dodaj produkt przed przejściem do płatności.",
     "addToCart": "Dodaj do koszyka",
     "adding": "Dodawanie...",
     "added": "Dodano do koszyka",

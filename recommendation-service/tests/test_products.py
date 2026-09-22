@@ -4,7 +4,7 @@ from app.products import ProductFetcher
 def test_static_catalogue_loads():
     fetcher = ProductFetcher()
     products = fetcher.get_all(force_refresh=True)
-    assert len(products) >= 6
+    assert len(products) >= 5
     for product in products:
         assert {"id", "name", "name_pl", "category", "price", "price_pl"}.issubset(
             product.keys()

@@ -199,6 +199,7 @@ class FuzzyMatcher:
 
         query_normalized = FuzzyMatcher._normalize(query)
 
+        search_text = str(product.get("search_text") or "")
         fields = {
             "name": FuzzyMatcher._normalize(
                 str(product.get("name") or "")
@@ -207,10 +208,10 @@ class FuzzyMatcher:
                 str(product.get("name_pl") or "")
             ),
             "description": FuzzyMatcher._normalize(
-                str(product.get("description") or "")
+                f"{product.get('description') or ''} {search_text}"
             ),
             "description_pl": FuzzyMatcher._normalize(
-                str(product.get("description_pl") or "")
+                f"{product.get('description_pl') or ''} {search_text}"
             ),
         }
 
@@ -319,6 +320,9 @@ class FuzzyMatcher:
                 original_score * 0.75
                 + expanded_score * 0.25
             )
+
+            if categories and product.get("category") in categories:
+                final_score = min(100.0, final_score + 15.0)
 
             if final_score < min_score:
                 continue

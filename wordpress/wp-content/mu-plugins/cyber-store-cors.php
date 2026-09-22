@@ -60,3 +60,28 @@ add_filter('rest_post_dispatch', function ($response) {
 
     return $response;
 });
+
+
+/*
+ * Zwracamy kanoniczny URL natywnego checkoutu WooCommerce.
+ * Dzięki temu frontend nie zależy od ID strony ani ustawień permalinków.
+ */
+add_action('rest_api_init', function () {
+    register_rest_route('cyber-store/v1', '/checkout-url', [
+        'methods' => 'GET',
+        'permission_callback' => '__return_true',
+        'callback' => function () {
+            if (!function_exists('wc_get_checkout_url')) {
+                return new WP_Error(
+                    'woocommerce_unavailable',
+                    'WooCommerce checkout is unavailable.',
+                    ['status' => 503]
+                );
+            }
+
+            return rest_ensure_response([
+                'url' => wc_get_checkout_url(),
+            ]);
+        },
+    ]);
+});

@@ -18,6 +18,7 @@
     "description": "Find the best security solutions for your needs",
     "welcome": "Hello! I'm your AI Security Assistant. Ask me about device protection, network security, or malware prevention, and I'll recommend the perfect solutions for you.",
     "placeholder": "Ask me about cybersecurity...",
+    "send": "Send message",
     "products": "Recommended Products",
     "error": "Sorry, I couldn't process your request. Please try again."
   },
@@ -43,6 +44,9 @@
     "total": "Total",
     "remove": "Remove",
     "checkout": "Proceed to checkout",
+    "checkoutLoading": "Opening checkout...",
+    "checkoutError": "WooCommerce checkout could not be opened. Please try again.",
+    "checkoutEmpty": "Your cart is empty. Add a product before proceeding to checkout.",
     "addToCart": "Add to cart",
     "adding": "Adding...",
     "added": "Added to cart",

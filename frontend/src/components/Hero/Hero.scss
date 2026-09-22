@@ -204,7 +204,7 @@
       width: 45%;
 
       > * {
-        transform: scale(1.2);
+        transform: scale(1.15);
       }
     }
   }
@@ -222,7 +222,7 @@
 
     min-height: calc(100vh - 70px);
 
-    padding: 60px 20px;
+    padding: 44px 20px 30px;
 
     flex-direction: column;
 
@@ -236,7 +236,7 @@
       text-align: center;
 
       h1 {
-        font-size: 48px;
+        font-size: clamp(42px, 12vw, 48px);
       }
 
       h2 {
@@ -265,9 +265,38 @@
       margin-top: 10px;
 
       > * {
-        transform: scale(1);
+        transform: scale(0.82);
       }
     }
   }
 
+}
+
+@media (max-width: 420px) {
+  .hero {
+    padding-top: 36px;
+
+    &__content {
+      h1 {
+        margin-bottom: 14px;
+      }
+
+      h2 {
+        margin-bottom: 18px;
+        font-size: 21px;
+      }
+
+      p {
+        margin-bottom: 26px;
+      }
+    }
+
+    &__visual {
+      height: 270px;
+
+      > * {
+        transform: scale(0.68);
+      }
+    }
+  }
 }

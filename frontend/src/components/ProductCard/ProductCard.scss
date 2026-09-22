@@ -1,6 +1,11 @@
 @use "@/styles/variables" as vars;
 
 .product-card {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
   background: rgba(17,24,39,0.75);
 
   border: 1px solid vars.$border-color;
@@ -81,6 +86,8 @@
     margin-bottom: 12px;
 
     line-height: 1.3;
+
+    overflow-wrap: anywhere;
   }
 
   p {
@@ -90,13 +97,15 @@
 
     font-size: 14px;
 
-    height: 42px;
+    min-height: 42px;
+    max-height: 63px;
 
     overflow: hidden;
   }
 
   &__footer {
-    margin-top: 20px;
+    margin-top: auto;
+    padding-top: 20px;
 
     display: flex;
 
@@ -104,12 +113,16 @@
 
     align-items: center;
 
+    gap: 12px;
+
     span {
       color: white;
 
       font-weight: 800;
 
       font-size: 18px;
+
+      white-space: nowrap;
     }
 
     .product-card__button {
@@ -247,6 +260,19 @@
 
       &:hover {
         text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .product-card {
+    &__footer {
+      align-items: stretch;
+      flex-direction: column;
+
+      .product-card__button {
+        text-align: center;
       }
     }
   }

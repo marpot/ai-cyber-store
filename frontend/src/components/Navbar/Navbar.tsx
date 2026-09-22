@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useScroll } from "@/context/ScrollContext";
 import { useTranslation } from "react-i18next";
@@ -8,6 +9,8 @@ import { useCart } from "@/context/CartContext";
 import "./Navbar.scss";
 
 function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const {
     activeSection,
     scrollTo: contextScrollTo,
@@ -36,6 +39,8 @@ function Navbar() {
     ) ?? 0;
 
   const handleNavigation = (section: string) => {
+    setMenuOpen(false);
+
     // Jesteśmy na stronie produktu lub koszyka
     if (isSubPage) {
       navigate("/");
@@ -52,14 +57,38 @@ function Navbar() {
     contextScrollTo(section);
   };
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
   return (
     <nav className="navbar">
 
-      <div className="navbar__logo">
+      <button
+        type="button"
+        className="navbar__logo"
+        onClick={() => handleNavigation("home")}
+      >
         AI Cyber Store
-      </div>
+      </button>
 
-      <div className="navbar__links">
+      <button
+        type="button"
+        className="navbar__menu-toggle"
+        aria-expanded={menuOpen}
+        aria-controls="primary-navigation"
+        aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+        onClick={() => setMenuOpen((open) => !open)}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
+
+      <div
+        id="primary-navigation"
+        className={`navbar__links${menuOpen ? " navbar__links--open" : ""}`}
+      >
 
         <a
           className={
@@ -112,9 +141,10 @@ function Navbar() {
               ? "active"
               : ""
           }
-          onClick={() =>
-            navigate("/cart")
-          }
+          onClick={() => {
+            setMenuOpen(false);
+            navigate("/cart");
+          }}
         >
           {t("nav.cart")} ({cartCount})
         </a>

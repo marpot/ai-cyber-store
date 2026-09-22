@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +19,11 @@ export default function Cart() {
     loading,
     updateQuantity,
     removeItem,
+    beginCheckout,
   } = useCart();
+
+  const [checkoutError, setCheckoutError] =
+    useState<string | null>(null);
 
   const handleContinueShopping = () => {
     navigate("/");
@@ -26,6 +31,27 @@ export default function Cart() {
     setTimeout(() => {
       scrollTo("shop");
     }, 100);
+  };
+
+  const handleCheckout = async () => {
+    if (!cart?.items.length) {
+      setCheckoutError(t("cart.checkoutEmpty"));
+      return;
+    }
+
+    setCheckoutError(null);
+
+    try {
+      await beginCheckout();
+    } catch (error) {
+      console.error("Checkout navigation error:", error);
+
+      setCheckoutError(
+        error instanceof Error && error.message === "empty-cart"
+          ? t("cart.checkoutEmpty")
+          : t("cart.checkoutError")
+      );
+    }
   };
 
   if (!cart || cart.items.length === 0) {
@@ -85,8 +111,8 @@ export default function Cart() {
                 key={item.key}
               >
 
-                {item.images?.[0]?.src && (
-                  <div className="cart-item__image">
+                <div className="cart-item__image">
+                  {item.images?.[0]?.src ? (
                     <img
                       src={item.images[0].src}
                       alt={
@@ -94,8 +120,10 @@ export default function Cart() {
                         item.name
                       }
                     />
-                  </div>
-                )}
+                  ) : (
+                    <span aria-hidden="true">🛡️</span>
+                  )}
+                </div>
 
                 <div className="cart-item__info">
 
@@ -177,14 +205,19 @@ export default function Cart() {
         <button
           className="cart-page__checkout"
           type="button"
-          onClick={() => {
-            console.log(
-              "Checkout coming next"
-            );
-          }}
+          disabled={loading}
+          onClick={handleCheckout}
         >
-          {t("cart.checkout")}
+          {loading
+            ? t("cart.checkoutLoading")
+            : t("cart.checkout")}
         </button>
+
+        {checkoutError && (
+          <p className="cart-page__checkout-error" role="alert">
+            {checkoutError}
+          </p>
+        )}
 
       </div>
     </section>
